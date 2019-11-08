@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.official;
 
 /*
 
@@ -18,6 +18,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.teamcode.Vector3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,12 +64,12 @@ public class WABOTVuforia {
     private OpenGLMatrix lastLocation = null;
 
     // Constructor
-    public WABOTVuforia(String licenseKey, VuforiaLocalizer.CameraDirection camDir, HardwareMap m, boolean showScreen){
-        init(licenseKey, showScreen, camDir, m);
+    public WABOTVuforia(String licenseKey, VuforiaLocalizer.CameraDirection camDir, HardwareMap m, boolean showScreen, boolean isPortrait){
+        init(licenseKey, showScreen, camDir, m, isPortrait);
     }
 
     // Initializes Vuforia Engine
-    public void init(String key, boolean show, VuforiaLocalizer.CameraDirection camDir, HardwareMap map){
+    public void init(String key, boolean show, VuforiaLocalizer.CameraDirection camDir, HardwareMap map, boolean isPortrait){
         VuforiaLocalizer.Parameters parameters;
         if(show){
             int cameraMonitorViewId = map.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", map.appContext.getPackageName());
@@ -168,11 +169,16 @@ public class WABOTVuforia {
                 .translation(halfField, -quadField, mmTargetHeight)
                 .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, -90)));
 
-        // We need to rotate the camera around it's long axis to bring the correct camera forward.
+        // We need to rotate the camera around its long axis to bring the correct camera forward.
         if (camDir == BACK) {
             phoneYRotate = -90;
         } else {
             phoneYRotate = 90;
+        }
+
+        // Rotate the phone vertical about the X axis if it's in portrait mode
+        if (isPortrait) {
+            phoneXRotate = 90 ;
         }
 
         // Next, translate the camera lens to where it is on the robot.
@@ -195,7 +201,7 @@ public class WABOTVuforia {
     public void activate(){
         targetsSkyStone.activate();
     }
-    
+
     // This method scans for objects ONCE when called
     public String run() {
         for (VuforiaTrackable vuMarks : allTrackables) {

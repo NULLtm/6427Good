@@ -1,5 +1,5 @@
 // the current package this class resides in
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.practice;
 
 // access data outside of this class by importing it
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;

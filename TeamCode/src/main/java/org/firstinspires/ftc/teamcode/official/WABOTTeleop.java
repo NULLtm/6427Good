@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.official;
 
 /*
  * Wright Angle Robotics #6427 2019-2020
@@ -10,18 +10,19 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 
 @TeleOp(name="WABOTTeleop", group="WABOT")
-//@Disabled
 public class  WABOTTeleop extends OpMode {
+
+
     // Declare OpMode members.
     WABOTHardware h;
-    float intakePow = 0;
 
+    // Intermediate values for input
     double as1 = 0;
     double as2 = 0.178;
     double as3 = 0.8;
-    double middleServoTarget = 0;
+    float intakePow = 0;
 
-    // Constant
+    // Speed modifier for drive controls
     private final double PRECISION_SPEED_MODIFIER = 0.5;
 
     /*
@@ -29,7 +30,6 @@ public class  WABOTTeleop extends OpMode {
      */
     @Override
     public void init() {
-        final double PRECISION_SPEED_MODIFIER = 0.5;
         // Tell the driver that initialization is complete.
         h = new WABOTHardware(hardwareMap);
         runEncoder(false);
@@ -48,6 +48,7 @@ public class  WABOTTeleop extends OpMode {
      */
     @Override
     public void start() {
+        // Starting Positions for Servos
         h.leftLatch.setPosition(0.36);
         h.rightLatch.setPosition(0.48);
         h.foundServo.setPosition(0.5);
@@ -62,7 +63,9 @@ public class  WABOTTeleop extends OpMode {
      */
     @Override
     public void loop() {
+        // Gamepad2 input
         input();
+        // Drive train controls
         superDrive();
     }
 
@@ -73,6 +76,7 @@ public class  WABOTTeleop extends OpMode {
     public void stop() {
         telemetry.addData("Status:", "Stopped");
 
+        // Stops motors just in case
         h.FLMotor.setPower(0);
         h.FRMotor.setPower(0);
         h.BLMotor.setPower(0);
@@ -84,7 +88,10 @@ public class  WABOTTeleop extends OpMode {
     // END arm: (UP) 1 - 0 (DOWN)
     // Middle Servo: 0 = (IN) 1 = (OUT)
 
+
     private void input(){
+
+        // Triggers control intake/outtake
         if(gamepad2.right_trigger > 0){
             intakePow = gamepad2.right_trigger;
         }else if(gamepad2.left_trigger > 0){
@@ -92,18 +99,8 @@ public class  WABOTTeleop extends OpMode {
         } else {
             intakePow = 0;
         }
-
         h.leftIntake.setPower(intakePow);
         h.rightIntake.setPower(intakePow);
-
-        /*while(Math.abs(as1-middleServoTarget) > 0.01){
-            if(as1 > middleServoTarget){
-                as1 -= 0.0002;
-            }
-            if(as1 < middleServoTarget){
-                as1 += 0.0002;
-            }
-        }*/
 
         if(gamepad2.start){
             h.armServo4.setPosition(1);
@@ -112,34 +109,32 @@ public class  WABOTTeleop extends OpMode {
             h.armServo4.setPosition(0);
         }
 
-        // IMPORTANT: Ideal servo pos for intake: LEFT: 0.33 RIGHT: 0.55
-        // IMPORTANT: Ideal for closed but pickup, LEFT: 0.283 RIGHT: 0.597
-        // IMPORTANT: STARTING ARM POS: Swing: 0.1564 END: 0.791
-        // IMPORTANT: Block Grabber Servo Pos: 1 = Close, 0 = Open
+
+        // Four positions for intake wheels (A-B-X-Y)
         if(gamepad2.a){
             h.leftLatch.setPosition(0.33f);
             h.rightLatch.setPosition(0.55f);
         }
-
         if(gamepad2.b){
             as1 = 0;
             as2 = 0.1564;
             as3 = 0.791;
         }
-
         if(gamepad2.x){
             h.leftLatch.setPosition(0.283);
             h.rightLatch.setPosition(0.597);
         }
-
         if(gamepad2.y){
             h.leftLatch.setPosition(0.55);
             h.rightLatch.setPosition(0.3);
         }
 
         // 1 = middle 2 = top 3 = end
+
+        // Moving forward/back
         h.armMotor.setPower(gamepad2.right_stick_y);
 
+        // Binary movement
         if(gamepad2.dpad_left){
             as1 = 0;
         }
@@ -147,22 +142,37 @@ public class  WABOTTeleop extends OpMode {
             as1 = 1;
         }
 
+        // Changing position by gamepad input
         as2 += 0.002 * -gamepad2.left_stick_y;
         as3 += 0.005 * gamepad2.left_stick_x;
 
+        // Clamps servo values
         as1 = clamp(0.3, 1, as1);
         as2 = clamp(0, 0.32, as2);
         as3 = clamp(0.41, 1, as3);
 
+        // Setting the servo position
         h.armServo1.setPosition(as1);
         h.armServo2.setPosition(as2);
         h.armServo3.setPosition(as3);
 
+        // Updating telemetry
         telemetry.addData("Middle: ", as1);
         telemetry.addData("Swing: ", as2);
         telemetry.addData("End: ", as3);
     }
-// RIGHT IS IN
+
+
+
+
+
+
+
+
+
+
+
+    // Switch between encoder and non-encoder settings
     private void runEncoder(boolean withEncoder){
         if(withEncoder) {
             h.FLMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -182,6 +192,7 @@ public class  WABOTTeleop extends OpMode {
 
     }
 
+    // Tank drive controls
     private void tankDrive(){
         double leftStickY = gamepad1.left_stick_y;
         double rightStickY = gamepad1.right_stick_y;
@@ -192,27 +203,30 @@ public class  WABOTTeleop extends OpMode {
         h.BRMotor.setPower(rightStickY);
     }
 
+    // 360 omni-drive controls
     private void superDrive(){
+
+        // Input
         double leftStickX = gamepad1.left_stick_x;
         double leftStickY = -gamepad1.left_stick_y;
         double rightStickX = gamepad1.right_stick_x;
 
+        // Calculating angle between X and Y inputs on the stick
         double angle = Math.atan2(leftStickY, leftStickX);
-
         angle = Math.toDegrees(angle);
-
         angle = Math.abs(angle);
-
+        // Altering value for sake of the program
         if(leftStickY < 0){
             angle = 360 - angle;
         }
 
-        telemetry.addData("Angle:", angle);
-
+        // Power variables
         double v1 = 0, v2 = 0, v3 = 0, v4 = 0;
 
+        // Represents what quadrant our stick is in
         int quadrant = 0;
 
+        // Calculating current quadrant
         if(leftStickX == 0 && leftStickY == 0){
             quadrant = 0;
         } else if(angle >= 0 && angle <= 90){
@@ -225,9 +239,12 @@ public class  WABOTTeleop extends OpMode {
             quadrant = 4;
         }
 
+        // Getting our composite input used as a backbone value for movement
+        // Short explanation: Always a net Y value, but uses a different percent from each direction based on Y value
         double sampleY = leftStickY;
         double magnitude = Math.abs(sampleY) + Math.abs((1-Math.abs(sampleY))*leftStickX);
 
+        // Based on the quadrant, change the underlying function each wheel depends on
         if(quadrant == 1){
             v1 = magnitude*((angle-45)/45);
             v3 = magnitude*((angle-45)/45);
@@ -255,6 +272,7 @@ public class  WABOTTeleop extends OpMode {
             v4 = 0;
         }
 
+        // If not using omni-drive, switch to normal turn
         if(rightStickX != 0){
             v1 = -1*rightStickX;
             v2 = rightStickX;
@@ -262,6 +280,7 @@ public class  WABOTTeleop extends OpMode {
             v4 = -1*rightStickX;
         }
 
+        // Precision controls based on bumpers pressed
         if(gamepad1.left_bumper && !gamepad1.right_bumper){
             v1 *= 0.5;
             v2 *= 0.5;
@@ -280,19 +299,9 @@ public class  WABOTTeleop extends OpMode {
             v3 *= 0.25;
             v4 *= 0.25;
         }
-
-        telemetry.addData("Front Right:", v1);
-        h.FRMotor.setPower(v1);
-        telemetry.addData("Front Left:", v2);
-        h.FLMotor.setPower(v2);
-        telemetry.addData("Back Left:", v3);
-        h.BLMotor.setPower(v3);
-        telemetry.addData("Back Right:", v4);
-        h.BRMotor.setPower(v4);
-        telemetry.addData("Quadrant", quadrant);
-        telemetry.addData("Left Y Value:", magnitude);
     }
 
+    // Normal holonomic drive
     private void holoDrive(){
         double leftStickX = gamepad1.right_stick_x;
         double leftStickY = -gamepad1.left_stick_y;
@@ -321,6 +330,7 @@ public class  WABOTTeleop extends OpMode {
         h.BRMotor.setPower(v4);
     }
 
+    // Clamp function
     public double clamp(double min, double max, double value){
         if(value < min){
             value = min;
