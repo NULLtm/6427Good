@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
 
 /**
@@ -94,9 +96,10 @@ public class WABOTAutonomous extends LinearOpMode {
 
         runEncoder(true);
 
-        h.leftLatch.setPosition(0.55f);
-        h.rightLatch.setPosition(0.3f);
-        h.foundServo.setPosition(0.5f);
+        h.leftFound.setPosition(1f);
+        h.rightFound.setPosition(0.5f);
+        h.backArm.setPosition(0f);
+        h.frontArm.setPosition(0f);
 
         telemetry.addLine("Status: Initializing Vuforia");
         telemetry.update();
@@ -133,17 +136,27 @@ public class WABOTAutonomous extends LinearOpMode {
 
     // Actual instructions for robot! All autonomous code goes here!!!
     private void run(){
-        runToPos(29*CM_PER_INCH, -0.5f);
+
+        while(h.ods.getDistance(DistanceUnit.CM) > 5){
+            telemetry.addData("Distance: ", h.ods.getDistance(DistanceUnit.CM));
+            strafeLinear(1, 0.8f);
+        }
+
+        while(opModeIsActive()) {
+            driveStraight(0, 0.5f);
+        }
+
+        /*runToPos(29*CM_PER_INCH, -0.5f);
         sleep(1000);
         strafe(13.8*CM_PER_INCH, 1f);
         sleep(1000);
-        h.foundServo.setPosition(0);
+        //h.foundServo.setPosition(0);
         sleep(1000);
         runToPos(30*CM_PER_INCH, 0.3f);
         sleep(1000);
-        h.foundServo.setPosition(0.5f);
+        //h.foundServo.setPosition(0.5f);
         sleep(2000);
-        strafe(55*CM_PER_INCH, -1f);
+        strafe(55*CM_PER_INCH, -1f);*/
 
     }
 
