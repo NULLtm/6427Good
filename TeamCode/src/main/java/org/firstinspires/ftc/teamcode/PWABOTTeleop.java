@@ -7,12 +7,13 @@ package org.firstinspires.ftc.teamcode;
  * Focuses on testing
  */
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp(name="PWABOTTeleop", group="PWABOT")
-//@Disabled
+@Disabled
 public class PWABOTTeleop extends OpMode {
 
     public PWABOTHardware h;

@@ -52,6 +52,8 @@ public class WABOTAutonomous extends LinearOpMode {
     // Hardware map object
     private WABOTHardware h;
 
+    // IMU
+    WABOTImu imu;
 
 
 
@@ -93,24 +95,19 @@ public class WABOTAutonomous extends LinearOpMode {
         telemetry.addLine("Status: Initializing Vuforia");
         telemetry.update();
 
-        //vuforia = new WABOTVuforia(VUFORIA_KEY, CAMERA_DIRECTION, hardwareMap, true);
+        vuforia = new WABOTVuforia(VUFORIA_KEY, CAMERA_DIRECTION, hardwareMap, true);
 
-        //telemetry.addLine("Status: Calibrating Gyro");
-        //telemetry.update();
+        vuforia.activate();
 
-        //h.gyro.calibrate();
-
-        //while(h.gyro.isCalibratng()){
-        //    // Left blank
-        //}
-
-        //vuforia.activate();
+        imu = new WABOTImu(hardwareMap);
 
         telemetry.addLine("Status: READY!");
         telemetry.update();
 
 
         waitForStart();
+
+        imu.activate();
 
         run();
     }
@@ -211,6 +208,33 @@ public class WABOTAutonomous extends LinearOpMode {
         motorDir(true);
         runEncoder(false);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+    // Position the Robot According to Vuforia marker
+    private void vuforiaPosition(){
+
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -413,13 +437,13 @@ public class WABOTAutonomous extends LinearOpMode {
 
     // IN PROGRESS
     // Maintains heading and adjusts if pushed: NEED GYRO
-    /*private void driveStraight(int targetHeading, double startSpeed){
-        int heading = h.gyro.getHeading();
+    private void driveStraight(int targetHeading, double startSpeed){
+        double heading = imu.getHeading();
         if(heading > 180){
             heading = heading - 360;
         }
 
-        int difference = targetHeading - heading;
+        double difference = targetHeading - heading;
         double power = difference/90.0;
 
         h.FLMotor.setPower(startSpeed + power);
@@ -427,7 +451,7 @@ public class WABOTAutonomous extends LinearOpMode {
         h.BLMotor.setPower(startSpeed + power);
         h.BRMotor.setPower(startSpeed - power);
 
-    }*/
+    }
 
 
 

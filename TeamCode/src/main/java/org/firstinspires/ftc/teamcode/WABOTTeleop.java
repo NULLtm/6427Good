@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 /*
  * Wright Angle Robotics #6427 2019-2020
- *
  */
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -63,7 +62,7 @@ public class  WABOTTeleop extends OpMode {
      */
     @Override
     public void loop() {
-        //holoDrive();
+        input();
         superDrive();
     }
 

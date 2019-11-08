@@ -2,6 +2,7 @@
 package org.firstinspires.ftc.teamcode;
 
 // access data outside of this class by importing it
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -9,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 // the main class (extending inherits all the data from opmode)
 @TeleOp(name = "ExampleTeleop", group = "ExampleOpModes")
+@Disabled
 public class ExampleOpMode extends OpMode {
     // here we declare variables and sometimes initialize them as well
     public DcMotor exampleMotor;
