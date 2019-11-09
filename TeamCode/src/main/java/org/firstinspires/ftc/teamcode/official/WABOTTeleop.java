@@ -8,6 +8,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 
 @TeleOp(name="WABOTTeleop", group="WABOT")
 public class  WABOTTeleop extends OpMode {
@@ -15,6 +17,9 @@ public class  WABOTTeleop extends OpMode {
 
     // Declare OpMode members.
     WABOTHardware h;
+
+    // Imu
+    WABOTImu imu;
 
     // Intermediate values for input
     double as1 = 0;
@@ -32,6 +37,7 @@ public class  WABOTTeleop extends OpMode {
     public void init() {
         // Tell the driver that initialization is complete.
         h = new WABOTHardware(hardwareMap);
+        imu = new WABOTImu(hardwareMap);
         runEncoder(false);
         telemetry.addData("Status", "Initialized");
     }
@@ -49,13 +55,18 @@ public class  WABOTTeleop extends OpMode {
     @Override
     public void start() {
         // Starting Positions for Servos
-        h.leftLatch.setPosition(0.36);
-        h.rightLatch.setPosition(0.48);
-        h.foundServo.setPosition(0.5);
-        h.armServo1.setPosition(0);
-        h.armServo2.setPosition(0.1564);
-        h.armServo3.setPosition(0.791);
-        h.armServo4.setPosition(0.5);
+        //h.leftLatch.setPosition(0.36);
+        //h.rightLatch.setPosition(0.48);
+        //h.foundServo.setPosition(0.5);
+        //h.armServo1.setPosition(0);
+        //h.armServo2.setPosition(0.1564);
+        //h.armServo3.setPosition(0.791);
+        //h.armServo4.setPosition(0.5);
+        h.leftFound.setPosition(1f);
+        h.rightFound.setPosition(0.5f);
+        h.backArm.setPosition(0f);
+        h.frontArm.setPosition(1f);
+        imu.activate();
     }
 
     /*
@@ -91,8 +102,11 @@ public class  WABOTTeleop extends OpMode {
 
     private void input(){
 
+        telemetry.addData("HEADING:", imu.getHeading());
+        telemetry.addData("DISTANCE:", h.ods.getDistance(DistanceUnit.CM));
+
         // Triggers control intake/outtake
-        if(gamepad2.right_trigger > 0){
+        /*if(gamepad2.right_trigger > 0){
             intakePow = gamepad2.right_trigger;
         }else if(gamepad2.left_trigger > 0){
             intakePow = -gamepad2.left_trigger;
@@ -160,6 +174,8 @@ public class  WABOTTeleop extends OpMode {
         telemetry.addData("Middle: ", as1);
         telemetry.addData("Swing: ", as2);
         telemetry.addData("End: ", as3);
+
+         */
     }
 
 
@@ -299,6 +315,11 @@ public class  WABOTTeleop extends OpMode {
             v3 *= 0.25;
             v4 *= 0.25;
         }
+
+        h.FRMotor.setPower(v1);
+        h.FLMotor.setPower(v2);
+        h.BLMotor.setPower(v3);
+        h.BRMotor.setPower(v4);
     }
 
     // Normal holonomic drive
