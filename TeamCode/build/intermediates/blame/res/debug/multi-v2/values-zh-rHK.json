@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/wrightang/Desktop/SkyStone-master/TeamCode/build/intermediates/incremental/mergeDebugResources/merged.dir/values-zh-rHK/values-zh-rHK.xml",
+            "outputFile": "/Users/owenboseley/Documents/GitHub/6427Good/TeamCode/build/intermediates/incremental/mergeDebugResources/merged.dir/values-zh-rHK/values-zh-rHK.xml",
             "map": [
                 {
-                    "source": "/Users/wrightang/.gradle/caches/transforms-2/files-2.1/fbff6d988b7f00674ae5650b13eafb1a/res/values-zh-rHK/values-zh-rHK.xml",
+                    "source": "/Users/owenboseley/.gradle/caches/transforms-2/files-2.1/e5af25b0b8955339ba858f4ecf11a7f0/res/values-zh-rHK/values-zh-rHK.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

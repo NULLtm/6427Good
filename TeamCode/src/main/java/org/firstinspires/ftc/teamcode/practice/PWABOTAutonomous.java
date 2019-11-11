@@ -87,7 +87,7 @@ public class PWABOTAutonomous extends LinearOpMode {
         telemetry.addLine("Status: Initializing Vuforia");
         telemetry.update();
 
-        vuforia = new WABOTVuforia(VUFORIA_KEY, CAMERA_DIRECTION, hardwareMap, true);
+        //vuforia = new WABOTVuforia(VUFORIA_KEY, CAMERA_DIRECTION, hardwareMap, true);
 
         telemetry.addLine("Status: Calibrating Gyro");
         telemetry.update();

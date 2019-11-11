@@ -83,16 +83,16 @@ public class ArmOpMode extends LinearOpMode {
         telemetry.addLine("READ ME --> !!!!UNTIL YOU SEE: \"READY\" DO NOT PRESS PLAY!!!!");
         telemetry.update();
 
-        h = new WABOTHardware(hardwareMap);
+        //h = new WABOTHardware(hardwareMap);
 
         telemetry.addLine("Status: Hardware Map");
         telemetry.update();
 
         runEncoder(false);
 
-        h.leftLatch.setPosition(0.8f);
-        h.rightLatch.setPosition(0.3f);
-        h.foundServo.setPosition(0.7f);
+        //h.leftLatch.setPosition(0.8f);
+        //h.rightLatch.setPosition(0.3f);
+        //h.foundServo.setPosition(0.7f);
 
         telemetry.addLine("Status: Initializing Vuforia");
         telemetry.update();
@@ -143,14 +143,14 @@ public class ArmOpMode extends LinearOpMode {
         stopMotors();
         turn(-1, 0.1f);
         if (gamepad1.x)  {
-            h.armServo1.setPosition(1);
+            //h.armServo1.setPosition(1);
         }else {
-            h.armServo1.setPosition(0.5);
+           // h.armServo1.setPosition(0.5);
         }
         if (gamepad1.y)  {
-            h.armServo1.setPosition(0);
+            //h.armServo1.setPosition(0);
         }else {
-            h.armServo1.setPosition(0.5);
+            //h.armServo1.setPosition(0.5);
         }
         //armServo3 not set to continuous
         /*if (gamepad1.a)  {
