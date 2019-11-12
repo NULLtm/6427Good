@@ -80,6 +80,7 @@ public class WABOTAutonomous extends LinearOpMode {
 
 
     // Initializing robot here!
+    // DO NOT TOUCH unless necessary
     @Override
     public void runOpMode() {
 
@@ -96,6 +97,8 @@ public class WABOTAutonomous extends LinearOpMode {
 
         runEncoder(true);
 
+
+        // Setting servo positions
         h.leftFound.setPosition(1f);
         h.rightFound.setPosition(0.5f);
         h.backArm.setPosition(0f);
@@ -129,23 +132,48 @@ public class WABOTAutonomous extends LinearOpMode {
 
 
 
-
-    // LEFT GOES TO: 0.2 (OPEN) to 0.55 (CLOSED)
-    // RIGHT GOES TO: 0.3 (CLOSED) to 0.66 (OPEN)
-    // FOUNDATION: 0 (DOWN) to 0.5 (UP)
-
     // Actual instructions for robot! All autonomous code goes here!!!
     private void run(){
 
+
+        //strafeLinear(-1, 0.6f);
+
+        //while(h.ods.getDistance(DistanceUnit.CM) > 20){
+        //}
+
+        //stopMotors();
+
+        turnByDegree(90);
+
+        //sleep(500);
+
+        //linearDrive(-0.5f);
+
+        /*while (vuforia.run().equals("NULL")) {
+        }
+
+        stopMotors();
+
+        sleep(500);
+
+        vuforiaPosition();
+
+        sleep(500);
+
+        strafeLinear(-1, 0.6f);
+
+        // Value not determined for distance
         while(h.ods.getDistance(DistanceUnit.CM) > 5){
-            telemetry.addData("Distance: ", h.ods.getDistance(DistanceUnit.CM));
-            strafeLinear(1, 0.8f);
-        }
+        }*/
 
-        while(opModeIsActive()) {
-            driveStraight(0, 0.5f);
-        }
+        //stopMotors();
 
+        //h.frontArm.setPosition();
+
+
+
+
+        // Old auto for foundation moving
         /*runToPos(29*CM_PER_INCH, -0.5f);
         sleep(1000);
         strafe(13.8*CM_PER_INCH, 1f);
@@ -528,7 +556,7 @@ public class WABOTAutonomous extends LinearOpMode {
     // DO NOT TOUCH
     // Usable is there is a gyro installed
     private void turnByDegree (int degree) {
-        double currentPower = 1;
+        double currentPower = 0.2;
         boolean right;
         double turnTo;
 
@@ -606,15 +634,17 @@ public class WABOTAutonomous extends LinearOpMode {
     // Used for "turn by degree" ONLY
     public double convertedHeading(double h){
         // TODO Check this for imu
-        double heading = h;
+
+
+        /* double heading = h;
         while(heading > 180){
             heading -= (2*(heading-180));
 
             if(heading < 0){
                 heading *= -1;
             }
-        }
-        return heading;
+        } */
+        return Math.abs(h);
     }
 
 

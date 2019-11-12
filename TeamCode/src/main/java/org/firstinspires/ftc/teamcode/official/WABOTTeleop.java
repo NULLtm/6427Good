@@ -55,6 +55,8 @@ public class  WABOTTeleop extends OpMode {
     @Override
     public void start() {
         // Starting Positions for Servos
+
+        // OLD
         //h.leftLatch.setPosition(0.36);
         //h.rightLatch.setPosition(0.48);
         //h.foundServo.setPosition(0.5);
@@ -62,10 +64,13 @@ public class  WABOTTeleop extends OpMode {
         //h.armServo2.setPosition(0.1564);
         //h.armServo3.setPosition(0.791);
         //h.armServo4.setPosition(0.5);
+
         h.leftFound.setPosition(1f);
         h.rightFound.setPosition(0.5f);
         h.backArm.setPosition(0f);
         h.frontArm.setPosition(1f);
+
+        // Activating IMU
         imu.activate();
     }
 
@@ -85,6 +90,7 @@ public class  WABOTTeleop extends OpMode {
      */
     @Override
     public void stop() {
+        // Updating to log
         telemetry.addData("Status:", "Stopped");
 
         // Stops motors just in case
@@ -351,7 +357,7 @@ public class  WABOTTeleop extends OpMode {
         h.BRMotor.setPower(v4);
     }
 
-    // Clamp function
+    // Clamp a double between a max and a min
     public double clamp(double min, double max, double value){
         if(value < min){
             value = min;

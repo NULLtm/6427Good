@@ -9,6 +9,13 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class WABOTHardware {
     private HardwareMap hardwareMap;
 
+
+    // OLD
+    // leftServo: 0.2 = OPEN, 0.55 = CLOSED
+    // rightServo: 0.3 = CLOSED, 0.66 = OPEN
+    // foundServo: 0 = DOWN, 0.5 = UP
+
+    // NEW
     // backArm: 1 = DOWN, 0 = UP
     // frontArm: 1 = DOWN, 0 = UP
     // leftFound: 1 = UP, 0.5 = DOWN

@@ -219,6 +219,6 @@ public class WABOTVuforia {
                 return vuMarks.getName();
             }
         }
-        return null;
+        return "NULL";
     }
 }
