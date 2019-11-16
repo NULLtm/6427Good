@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/owenboseley/Documents/GitHub/6427Good/TeamCode/build/intermediates/incremental/mergeDebugResources/merged.dir/values-or/values-or.xml",
+            "outputFile": "C:\\Users\\Wrightang\\Documents\\GitHub\\6427Good\\TeamCode\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-or\\values-or.xml",
             "map": [
                 {
-                    "source": "/Users/owenboseley/.gradle/caches/transforms-2/files-2.1/e5af25b0b8955339ba858f4ecf11a7f0/res/values-or/values-or.xml",
+                    "source": "C:\\Users\\Wrightang\\.gradle\\caches\\transforms-2\\files-2.1\\baabc76a629e079880382c5b28c3948e\\res\\values-or\\values-or.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

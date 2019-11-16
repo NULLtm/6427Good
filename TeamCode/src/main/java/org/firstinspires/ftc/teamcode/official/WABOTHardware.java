@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+
 public class WABOTHardware {
     private HardwareMap hardwareMap;
 
@@ -25,11 +27,14 @@ public class WABOTHardware {
     public DcMotor FRMotor;
     public DcMotor BLMotor;
     public DcMotor BRMotor;
+    public DcMotor leftIntake;
+    public DcMotor rightIntake;
     public Servo leftFound;
     public Servo rightFound;
     public Servo backArm;
     public Servo frontArm;
     public Rev2mDistanceSensor ods;
+    public WebcamName webcam;
 
     protected WABOTHardware(HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap;
@@ -39,10 +44,13 @@ public class WABOTHardware {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
+        webcam = hardwareMap.get(WebcamName.class, "webcam");
         FLMotor = hardwareMap.get(DcMotor.class, "FLMotor");
         FRMotor = hardwareMap.get(DcMotor.class, "FRMotor");
         BLMotor = hardwareMap.get(DcMotor.class, "BLMotor");
         BRMotor = hardwareMap.get(DcMotor.class, "BRMotor");
+        leftIntake = hardwareMap.get(DcMotor.class, "leftIntake");
+        rightIntake = hardwareMap.get(DcMotor.class, "rightIntake");
         leftFound = hardwareMap.get(Servo.class, "leftFound");
         rightFound = hardwareMap.get(Servo.class, "rightFound");
         backArm = hardwareMap.get(Servo.class, "backArm");

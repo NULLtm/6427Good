@@ -11,6 +11,8 @@ This class contains vuforia code
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -35,6 +37,8 @@ public class WABOTVuforia {
     VuforiaTrackables targetsSkyStone;
     List<VuforiaTrackable> allTrackables;
 
+    private boolean targetVisible = false;
+
     // Since ImageTarget trackables use mm to specifiy their dimensions, we must use mm for all the physical dimension.
     // We will define some constants and conversions here
     private static final float mmPerInch        = 25.4f;
@@ -58,18 +62,18 @@ public class WABOTVuforia {
     private float phoneYRotate    = 0;
     private float phoneZRotate    = 0;
 
-    private Vector3 position = new Vector3(0, 0, 0);
-    private Vector3 rotation = new Vector3(0, 0, 0);
+    public Vector3 position = new Vector3(0, 0, 0);
+    public Vector3 rotation = new Vector3(0, 0, 0);
 
     private OpenGLMatrix lastLocation = null;
 
     // Constructor
-    public WABOTVuforia(String licenseKey, VuforiaLocalizer.CameraDirection camDir, HardwareMap m, boolean showScreen, boolean isPortrait){
-        init(licenseKey, showScreen, camDir, m, isPortrait);
+    public WABOTVuforia(Telemetry telemetry, String licenseKey, VuforiaLocalizer.CameraDirection camDir, HardwareMap m, boolean showScreen, boolean isPortrait, WABOTHardware myMap){
+        init(telemetry, licenseKey, showScreen, camDir, m, isPortrait, myMap);
     }
 
     // Initializes Vuforia Engine
-    public void init(String key, boolean show, VuforiaLocalizer.CameraDirection camDir, HardwareMap map, boolean isPortrait){
+    public void init(Telemetry telemetry, String key, boolean show, VuforiaLocalizer.CameraDirection camDir, HardwareMap map, boolean isPortrait, WABOTHardware myMap){
         VuforiaLocalizer.Parameters parameters;
         if(show){
             int cameraMonitorViewId = map.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", map.appContext.getPackageName());
@@ -80,9 +84,16 @@ public class WABOTVuforia {
 
         // https://developer.vuforia.com/license-manager
         parameters.vuforiaLicenseKey = key;
-        parameters.cameraDirection   = camDir;
+
+        WebcamName cam = myMap.webcam;
+
+        //parameters.cameraDirection = camDir;
+
+        parameters.cameraName = cam;
 
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
+
+
         targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
 
         VuforiaTrackable stoneTarget = targetsSkyStone.get(0);
@@ -183,9 +194,9 @@ public class WABOTVuforia {
 
         // Next, translate the camera lens to where it is on the robot.
         // In this example, it is centered (left to right), but forward of the middle of the robot, and above ground level.
-        final float CAMERA_FORWARD_DISPLACEMENT  = 4.0f * mmPerInch;   // eg: Camera is 4 Inches in front of robot center
-        final float CAMERA_VERTICAL_DISPLACEMENT = 8.0f * mmPerInch;   // eg: Camera is 8 Inches above ground
-        final float CAMERA_LEFT_DISPLACEMENT     = 0;     // eg: Camera is ON the robot's center line
+        final float CAMERA_FORWARD_DISPLACEMENT  = 8.75f * mmPerInch;   // eg: Camera is 4 Inches in front of robot center
+        final float CAMERA_VERTICAL_DISPLACEMENT = 6.6f * mmPerInch;   // eg: Camera is 8 Inches above ground
+        final float CAMERA_LEFT_DISPLACEMENT     = 15.5f * mmPerInch;     // eg: Camera is ON the robot's center line
 
         OpenGLMatrix robotFromCamera = OpenGLMatrix
                 .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
@@ -201,24 +212,54 @@ public class WABOTVuforia {
     public void activate(){
         targetsSkyStone.activate();
     }
+    public void deactivate(){
+        targetsSkyStone.deactivate();
+    }
 
     // This method scans for objects ONCE when called
-    public String run() {
-        for (VuforiaTrackable vuMarks : allTrackables) {
-            if (((VuforiaTrackableDefaultListener) vuMarks.getListener()).isVisible()) {
-                // express position (translation) of robot in inches.
-                VectorF translation = lastLocation.getTranslation();
-                position.x = translation.get(0) / mmPerInch;
-                position.y = translation.get(1) / mmPerInch;
-                position.z = translation.get(2) / mmPerInch;
-                // express the rotation of the robot in degrees.
-                Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-                this.rotation.x = rotation.firstAngle;
-                this.rotation.y = rotation.secondAngle;
-                this.rotation.z = rotation.thirdAngle;
-                return vuMarks.getName();
+    public double run(Telemetry telemetry) {
+        double returnD = 0;
+        String returnStr = "NULL";
+        targetVisible = false;
+        for (VuforiaTrackable trackable : allTrackables) {
+            if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
+
+                returnStr = trackable.getName();
+
+                // getUpdatedRobotLocation() will return null if no new information is available since
+                // the last time that call was made, or if the trackable is not currently visible.
+                OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)trackable.getListener()).getUpdatedRobotLocation();
+                if (robotLocationTransform != null) {
+                    lastLocation = robotLocationTransform;
+                }
+                break;
             }
         }
-        return "NULL";
+
+        // Provide feedback as to where the robot is located (if we know).
+        if (targetVisible) {
+            // express position (translation) of robot in inches.
+            VectorF translation = lastLocation.getTranslation();
+
+            telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
+                    translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
+
+            position.x = translation.get(0) / mmPerInch;
+            position.y = translation.get(1) / mmPerInch;
+            position.z = translation.get(2) / mmPerInch;
+
+            returnD = translation.get(0);
+
+            // express the rotation of the robot in degrees.
+            Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
+            telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
+
+            this.rotation.x = rotation.firstAngle;
+            this.rotation.y = rotation.secondAngle;
+            this.rotation.z = rotation.thirdAngle;
+            telemetry.update();
+        }
+
+        return returnD;
     }
 }

@@ -59,9 +59,9 @@ public class WABOTAutonomous extends LinearOpMode {
 
     // Parameters for initializing vuforia
     // NOTE: If Webcam: Direction = BACK, isPortrait = true;
-    private final String VUFORIA_KEY = "AQc7P77/////AAAAGRkj9xpwbUV3lGEfqxdnuDCJ/2Rml7cEF7R7SqndRsU6cegdDxLs9sSsk8x5AqituFBD6dCrCZFJB/P4+tc3O3uooja7zTjZ+knDbMYmJq7t35B0ZSRUp84N0e7bkiDq+rGvM7qWl7rOMCJL0tN8CPXDL843WleEAUrvMl0Ba5jnAz8ZX4UTpk+/8e3Hz1F4s/F7/VjkJejp9JbPDEYdvwMOwwFedcAumO+NTZfe5mWqFY2MBBwLJi6h6SZ1g4a7qWThAorw0G0AZK0WiIWYiQVzPLaKTiq8jEKAY9lxSFon02LXkGtaLi6X5krlNiiacNQcSYSj9Y+6oxCUGH0zUvBZgpbG5tKQJqzyovqqP5UT";
+    private final String VUFORIA_KEY = "ATs85vP/////AAABmedvSEuRQ0j9uYwlATaryQxyeVF6AtDWjTZ/2e6s8KELjPp1fDUV3Nn3X1xEZSoPk0Y81/6kr2k/8Q0xdlNkCDIJ+qBpXM8vpA+5qL7mYY6KthDalcBqD8pKiEBiSy0gW0wzniDtDR/Bf4ndSizQgoI10u9PD248vTfkt8NxJLsgM98pyCyeYZ2c16yLcASypCOhFJvljA7M6DM+qfWgWnOWXiVd2OZLsLtFcHZu4aEKjCHwqnlk9KYSI5BT8I4i+3FoE/JffsIzAl/iXMPu7w6eJJXYqNq7lGCzMRwfn+6OoYA51sy/Ahr/uyWUj/u0nzgF/IlRkteKXks+eUok5kFLeT2KxkbpNVwie11YgQRg";
     private final CameraDirection CAMERA_DIRECTION = CameraDirection.BACK;
-    private final boolean CAMERA_IS_PORTRAIT = true;
+    private final boolean CAMERA_IS_PORTRAIT = false;
 
 
 
@@ -79,7 +79,7 @@ public class WABOTAutonomous extends LinearOpMode {
 
 
 
-    // Initializing robot here!
+    // Initializi1ng robot here!
     // DO NOT TOUCH unless necessary
     @Override
     public void runOpMode() {
@@ -91,10 +91,6 @@ public class WABOTAutonomous extends LinearOpMode {
 
         h = new WABOTHardware(hardwareMap);
 
-        telemetry.addLine("Status: Hardware Map");
-        telemetry.update();
-
-
         runEncoder(true);
 
 
@@ -102,14 +98,10 @@ public class WABOTAutonomous extends LinearOpMode {
         h.leftFound.setPosition(1f);
         h.rightFound.setPosition(0.5f);
         h.backArm.setPosition(0f);
-        h.frontArm.setPosition(0f);
+        h.frontArm.setPosition(1f);
 
-        telemetry.addLine("Status: Initializing Vuforia");
-        telemetry.update();
+        vuforia = new WABOTVuforia(telemetry, VUFORIA_KEY, CAMERA_DIRECTION, hardwareMap, true, CAMERA_IS_PORTRAIT, h);
 
-        vuforia = new WABOTVuforia(VUFORIA_KEY, CAMERA_DIRECTION, hardwareMap, false, CAMERA_IS_PORTRAIT);
-
-        vuforia.activate();
 
         telemetry.addLine("Status: Imu");
         telemetry.update();
@@ -135,15 +127,56 @@ public class WABOTAutonomous extends LinearOpMode {
     // Actual instructions for robot! All autonomous code goes here!!!
     private void run(){
 
+        vuforia.activate();
+
+        h.leftFound.setPosition(0.5f);
+        h.rightFound.setPosition(1f);
+
+        while(opModeIsActive()){
+            telemetry.addData("Vuforia:", vuforia.run(telemetry));
+           // telemetry.addData("Vuforia Pos X: ", vuforia.position.x);
+            //telemetry.addLine("Vuforia Pos: X: "+vuforia.position.x+" Y: "+vuforia.position.y+" Z: "+vuforia.position.z);
+            //telemetry.addLine("Vuforia Rot: X: "+vuforia.rotation.x+" Y: "+vuforia.rotation.y+" Z: "+vuforia.rotation.z);
+        }
+
+        vuforia.deactivate();
+
+        /*strafeLinear(1, 0.8f);
+        while(h.ods.getDistance(DistanceUnit.CM) > 35){
+
+        }
+
+        stopMotors();
+
+        sleep(1000);
+
+        linearDrive(0.5f);
+        while(vuforia.run() == "NULL"){
+
+        }
+
+        stopMotors();
 
         //strafeLinear(-1, 0.6f);
 
         //while(h.ods.getDistance(DistanceUnit.CM) > 20){
         //}
 
-        //stopMotors();
+        //stopMotors();*/
 
-        turnByDegree(90);
+        /*while(opModeIsActive()){
+            if(!vuforia.run().equals("NULL")){
+                telemetry.addLine(vuforia.run());
+                telemetry.addLine("Position: X: "+vuforia.position.x+" Y: "+vuforia.position.y+" Z: "+vuforia.position.z);
+                telemetry.addLine("Rotation: X: "+vuforia.rotation.x+" Y: "+vuforia.rotation.y+" Z: "+vuforia.rotation.z);
+            } else {
+                telemetry.addLine("No Target Detected");
+            }
+
+            telemetry.update();
+        }*/
+
+        //turnByDegree(90);
 
         //sleep(500);
 
@@ -500,13 +533,10 @@ public class WABOTAutonomous extends LinearOpMode {
     private void driveStraight(int targetHeading, double startSpeed){
         double heading = imu.getHeading();
 
-        // Depends on IMU vs. GYRO
-        // TODO Test this on imu
-        if(heading > 180){
-            heading = heading - 360;
-        }
+        telemetry.addData("Heading: ", heading);
+        telemetry.update();
 
-        double difference = targetHeading - heading;
+        double difference = heading - targetHeading;
         double power = difference/90.0;
 
         h.FLMotor.setPower(startSpeed + power);
@@ -556,16 +586,16 @@ public class WABOTAutonomous extends LinearOpMode {
     // DO NOT TOUCH
     // Usable is there is a gyro installed
     private void turnByDegree (int degree) {
-        double currentPower = 0.2;
+        double currentPower = 0.3;
         boolean right;
         double turnTo;
 
         if(degree < 0){
             right = false;
-            turnTo = convertedHeading((degree*-1) + imu.getHeading());
+            turnTo = convertedHeading((degree*-1)) + convertedHeading(imu.getHeading());
         } else {
             right = true;
-            turnTo = convertedHeading(degree + imu.getHeading());
+            turnTo = convertedHeading(degree) + convertedHeading(imu.getHeading());
         }
 
         // if to the right, turn right, vise versa
@@ -585,8 +615,8 @@ public class WABOTAutonomous extends LinearOpMode {
                 h.BLMotor.setPower(currentPower);
                 h.BRMotor.setPower(-currentPower);
 
-                if(difference < 12){
-                    currentPower = Math.pow(1.2, 0.3*difference) - 1;
+                if(difference <= 3){
+                    currentPower *= (difference / 3);
                 }
             }
         } else if (!right) {
@@ -604,8 +634,8 @@ public class WABOTAutonomous extends LinearOpMode {
                 h.BLMotor.setPower(-currentPower);
                 h.BRMotor.setPower(currentPower);
 
-                if(difference < 12){
-                    currentPower = Math.pow(1.2, 0.3*difference) - 1;
+                if(difference <= 3){
+                    currentPower *= (difference / 3);
                 }
             }
         }

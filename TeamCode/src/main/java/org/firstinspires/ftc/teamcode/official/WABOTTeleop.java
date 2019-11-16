@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 
 @TeleOp(name="WABOTTeleop", group="WABOT")
@@ -18,8 +19,14 @@ public class  WABOTTeleop extends OpMode {
     // Declare OpMode members.
     WABOTHardware h;
 
-    // Imu
+    // IMU
     WABOTImu imu;
+
+    private WABOTVuforia vuforia;
+
+    private final String VUFORIA_KEY = "ATs85vP/////AAABmedvSEuRQ0j9uYwlATaryQxyeVF6AtDWjTZ/2e6s8KELjPp1fDUV3Nn3X1xEZSoPk0Y81/6kr2k/8Q0xdlNkCDIJ+qBpXM8vpA+5qL7mYY6KthDalcBqD8pKiEBiSy0gW0wzniDtDR/Bf4ndSizQgoI10u9PD248vTfkt8NxJLsgM98pyCyeYZ2c16yLcASypCOhFJvljA7M6DM+qfWgWnOWXiVd2OZLsLtFcHZu4aEKjCHwqnlk9KYSI5BT8I4i+3FoE/JffsIzAl/iXMPu7w6eJJXYqNq7lGCzMRwfn+6OoYA51sy/Ahr/uyWUj/u0nzgF/IlRkteKXks+eUok5kFLeT2KxkbpNVwie11YgQRg";
+    private final VuforiaLocalizer.CameraDirection CAMERA_DIRECTION = VuforiaLocalizer.CameraDirection.BACK;
+    private final boolean CAMERA_IS_PORTRAIT = false;
 
     // Intermediate values for input
     double as1 = 0;
@@ -37,8 +44,12 @@ public class  WABOTTeleop extends OpMode {
     public void init() {
         // Tell the driver that initialization is complete.
         h = new WABOTHardware(hardwareMap);
-        imu = new WABOTImu(hardwareMap);
         runEncoder(false);
+        //imu = new WABOTImu(hardwareMap);
+
+        vuforia = new WABOTVuforia(telemetry, VUFORIA_KEY, CAMERA_DIRECTION, hardwareMap, true, CAMERA_IS_PORTRAIT, h);
+
+        vuforia.activate();
         telemetry.addData("Status", "Initialized");
     }
 
@@ -65,13 +76,12 @@ public class  WABOTTeleop extends OpMode {
         //h.armServo3.setPosition(0.791);
         //h.armServo4.setPosition(0.5);
 
+        //imu.activate();
+
         h.leftFound.setPosition(1f);
         h.rightFound.setPosition(0.5f);
         h.backArm.setPosition(0f);
         h.frontArm.setPosition(1f);
-
-        // Activating IMU
-        imu.activate();
     }
 
     /*
@@ -83,6 +93,10 @@ public class  WABOTTeleop extends OpMode {
         input();
         // Drive train controls
         superDrive();
+
+        telemetry.addData("Vuforia:", vuforia.run(telemetry));
+        telemetry.addLine("Vuforia Pos: X: "+vuforia.position.x+" Y: "+vuforia.position.y+" Z: "+vuforia.position.z);
+        telemetry.addLine("Vuforia Rot: X: "+vuforia.rotation.x+" Y: "+vuforia.rotation.y+" Z: "+vuforia.rotation.z);
     }
 
     /*
@@ -108,11 +122,12 @@ public class  WABOTTeleop extends OpMode {
 
     private void input(){
 
-        telemetry.addData("HEADING:", imu.getHeading());
-        telemetry.addData("DISTANCE:", h.ods.getDistance(DistanceUnit.CM));
+        //telemetry.addData("Heading: ", imu.getHeading());
+        telemetry.addData("Distance: ", h.ods.getDistance(DistanceUnit.CM));
+
 
         // Triggers control intake/outtake
-        /*if(gamepad2.right_trigger > 0){
+        if(gamepad2.right_trigger > 0){
             intakePow = gamepad2.right_trigger;
         }else if(gamepad2.left_trigger > 0){
             intakePow = -gamepad2.left_trigger;
@@ -122,7 +137,19 @@ public class  WABOTTeleop extends OpMode {
         h.leftIntake.setPower(intakePow);
         h.rightIntake.setPower(intakePow);
 
-        if(gamepad2.start){
+
+        if(gamepad2.a){
+            h.leftFound.setPosition(0.5f);
+            h.rightFound.setPosition(1f);
+        }
+
+        if(gamepad2.y){
+            h.leftFound.setPosition(1f);
+            h.rightFound.setPosition(0.5f);
+        }
+
+
+        /*if(gamepad2.start){
             h.armServo4.setPosition(1);
         }
         if(gamepad2.back){
