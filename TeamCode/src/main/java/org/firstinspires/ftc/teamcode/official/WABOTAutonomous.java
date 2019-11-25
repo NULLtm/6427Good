@@ -6,7 +6,12 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
+
+import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
+import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
+import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 
 /**
  * OFFICIAL AUTONOMOUS CODE
@@ -99,9 +104,12 @@ public class WABOTAutonomous extends LinearOpMode {
         h.rightFound.setPosition(0.5f);
         h.backArm.setPosition(0f);
         h.frontArm.setPosition(1f);
+        h.leftIntakeServo.setPosition(0.74);
+        h.rightIntakeServo.setPosition(0.558);
 
-        vuforia = new WABOTVuforia(telemetry, VUFORIA_KEY, CAMERA_DIRECTION, hardwareMap, true, CAMERA_IS_PORTRAIT, h);
+        vuforia = new WABOTVuforia(VUFORIA_KEY, CAMERA_DIRECTION, hardwareMap, true, CAMERA_IS_PORTRAIT, h);
 
+        vuforia.activate();
 
         telemetry.addLine("Status: Imu");
         telemetry.update();
@@ -127,22 +135,18 @@ public class WABOTAutonomous extends LinearOpMode {
     // Actual instructions for robot! All autonomous code goes here!!!
     private void run(){
 
-        vuforia.activate();
+        // BUFFER: 25-33 cm at START
 
-        h.leftFound.setPosition(0.5f);
-        h.rightFound.setPosition(1f);
+        linearDrive(0.2f);
 
-        while(opModeIsActive()){
-            telemetry.addData("Vuforia:", vuforia.run(telemetry));
-           // telemetry.addData("Vuforia Pos X: ", vuforia.position.x);
-            //telemetry.addLine("Vuforia Pos: X: "+vuforia.position.x+" Y: "+vuforia.position.y+" Z: "+vuforia.position.z);
-            //telemetry.addLine("Vuforia Rot: X: "+vuforia.rotation.x+" Y: "+vuforia.rotation.y+" Z: "+vuforia.rotation.z);
+        while(vuforia.run().equals("NULL")) {
+
         }
 
-        vuforia.deactivate();
+        stopMotors();
 
         /*strafeLinear(1, 0.8f);
-        while(h.ods.getDistance(DistanceUnit.CM) > 35){
+        while(h.ods.getDistance(DistanceUnit.CM) > 40){
 
         }
 
@@ -150,12 +154,30 @@ public class WABOTAutonomous extends LinearOpMode {
 
         sleep(1000);
 
-        linearDrive(0.5f);
-        while(vuforia.run() == "NULL"){
+        linearDrive(0.2f);
+        while(vuforia.run().equals("NULL")){
 
         }
 
         stopMotors();
+
+        vuforiaPosition(-106);
+
+        sleep(1000);
+
+        strafeLinear(1, 0.5f);
+
+        while(h.ods.getDistance(DistanceUnit.CM) > 0.5*CM_PER_INCH){
+
+        }
+
+        stopMotors();
+
+        sleep(500);
+
+        h.frontArm.setPosition(0f);*/
+
+
 
         //strafeLinear(-1, 0.6f);
 
@@ -314,8 +336,18 @@ public class WABOTAutonomous extends LinearOpMode {
 
 
     // Position the Robot According to Vuforia marker
-    private void vuforiaPosition(){
-        // TODO Code this
+    private void vuforiaPosition(int posX){
+        if(vuforia.translation.get(1) > posX){
+            linearDrive(-0.2f);
+        } else  if(vuforia.translation.get(1) < posX){
+            linearDrive(0.2f);
+        }
+
+        while(Math.abs(posX - vuforia.translation.get(1)) > 3){
+
+        }
+
+        stopMotors();
     }
 
 

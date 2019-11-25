@@ -9,7 +9,12 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+
+import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
+import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
+import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 
 
 @TeleOp(name="WABOTTeleop", group="WABOT")
@@ -34,6 +39,9 @@ public class  WABOTTeleop extends OpMode {
     double as3 = 0.8;
     float intakePow = 0;
 
+    double servoPosLeft = 0.8;
+    double servoPosRight = 0.5;
+
     // Speed modifier for drive controls
     private final double PRECISION_SPEED_MODIFIER = 0.5;
 
@@ -47,9 +55,9 @@ public class  WABOTTeleop extends OpMode {
         runEncoder(false);
         //imu = new WABOTImu(hardwareMap);
 
-        vuforia = new WABOTVuforia(telemetry, VUFORIA_KEY, CAMERA_DIRECTION, hardwareMap, true, CAMERA_IS_PORTRAIT, h);
+        //vuforia = new WABOTVuforia(VUFORIA_KEY, CAMERA_DIRECTION, hardwareMap, true, CAMERA_IS_PORTRAIT, h);
 
-        vuforia.activate();
+        //vuforia.activate();
         telemetry.addData("Status", "Initialized");
     }
 
@@ -66,22 +74,14 @@ public class  WABOTTeleop extends OpMode {
     @Override
     public void start() {
         // Starting Positions for Servos
-
-        // OLD
-        //h.leftLatch.setPosition(0.36);
-        //h.rightLatch.setPosition(0.48);
-        //h.foundServo.setPosition(0.5);
-        //h.armServo1.setPosition(0);
-        //h.armServo2.setPosition(0.1564);
-        //h.armServo3.setPosition(0.791);
-        //h.armServo4.setPosition(0.5);
-
         //imu.activate();
 
         h.leftFound.setPosition(1f);
         h.rightFound.setPosition(0.5f);
-        h.backArm.setPosition(0f);
+        h.backArm.setPosition(0.45f);
         h.frontArm.setPosition(1f);
+        h.leftIntakeServo.setPosition(0.74);
+        h.rightIntakeServo.setPosition(0.558);
     }
 
     /*
@@ -93,10 +93,6 @@ public class  WABOTTeleop extends OpMode {
         input();
         // Drive train controls
         superDrive();
-
-        telemetry.addData("Vuforia:", vuforia.run(telemetry));
-        telemetry.addLine("Vuforia Pos: X: "+vuforia.position.x+" Y: "+vuforia.position.y+" Z: "+vuforia.position.z);
-        telemetry.addLine("Vuforia Rot: X: "+vuforia.rotation.x+" Y: "+vuforia.rotation.y+" Z: "+vuforia.rotation.z);
     }
 
     /*
@@ -114,12 +110,6 @@ public class  WABOTTeleop extends OpMode {
         h.BRMotor.setPower(0);
     }
 
-
-    // Swing Arm: (OPEN) 1 - 0 (Down)
-    // END arm: (UP) 1 - 0 (DOWN)
-    // Middle Servo: 0 = (IN) 1 = (OUT)
-
-
     private void input(){
 
         //telemetry.addData("Heading: ", imu.getHeading());
@@ -127,99 +117,90 @@ public class  WABOTTeleop extends OpMode {
 
 
         // Triggers control intake/outtake
-        if(gamepad2.right_trigger > 0){
-            intakePow = gamepad2.right_trigger;
-        }else if(gamepad2.left_trigger > 0){
-            intakePow = -gamepad2.left_trigger;
+        if(gamepad1.right_trigger > 0){
+            intakePow = gamepad1.right_trigger;
+            h.rightIntakeMini.setPosition(0);
+            h.leftIntakeMini.setPosition(1);
+        }else if(gamepad1.left_trigger > 0){
+            intakePow = -gamepad1.left_trigger;
+            h.rightIntakeMini.setPosition(1);
+            h.leftIntakeMini.setPosition(0);
         } else {
+            h.rightIntakeMini.setPosition(0.5);
+            h.leftIntakeMini.setPosition(0.5);
             intakePow = 0;
         }
-        h.leftIntake.setPower(intakePow);
+        h.leftIntake.setPower(-intakePow);
         h.rightIntake.setPower(intakePow);
 
+        h.slideMotorLeft.setPower(-gamepad2.left_stick_y);
+        h.slideMotorRight.setPower(-gamepad2.left_stick_y);
 
-        if(gamepad2.a){
+
+        // TESTING SERVO POSITIONS
+        /*
+        servoPosLeft += gamepad2.right_stick_y*0.001;
+        servoPosRight += gamepad2.left_stick_y*0.001;
+
+        h.leftIntakeServo.setPosition(servoPosLeft);
+        h.rightIntakeServo.setPosition(servoPosRight);
+
+        telemetry.addData("Servo Pos LEFT: ", servoPosLeft);
+        telemetry.addData("Servo Pos RIGHT: ", servoPosRight);
+         */
+
+
+
+        if(gamepad2.right_stick_y < -0.5){
+            h.linearServoLeft.setPosition(0.84);
+            h.linearServoRight.setPosition(0.20);
+        }
+        if(gamepad2.right_stick_y > 0.5){
+            h.linearServoLeft.setPosition(0.42);
+            h.linearServoRight.setPosition(0.63);
+        }
+
+//        if(gamepad2.back){
+//            h.linearServoLeft.setPosition(0.49);
+//            h.linearServoRight.setPosition(0.57);
+//        }
+
+
+        if(gamepad1.dpad_right){
+            h.leftIntakeServo.setPosition(0.74);
+            h.rightIntakeServo.setPosition(0.558);
+        }
+
+        if(gamepad1.dpad_left){
+            h.leftIntakeServo.setPosition(0.343);
+            h.rightIntakeServo.setPosition(0.854);
+        }
+
+        if(gamepad1.dpad_up){
+            h.leftIntakeServo.setPosition(0.55);
+            h.rightIntakeServo.setPosition(0.713);
+        }
+
+        if(gamepad1.x){
             h.leftFound.setPosition(0.5f);
             h.rightFound.setPosition(1f);
         }
 
-        if(gamepad2.y){
+        if(gamepad1.b){
             h.leftFound.setPosition(1f);
             h.rightFound.setPosition(0.5f);
         }
 
-
-        /*if(gamepad2.start){
-            h.armServo4.setPosition(1);
-        }
-        if(gamepad2.back){
-            h.armServo4.setPosition(0);
-        }
-
-
-        // Four positions for intake wheels (A-B-X-Y)
-        if(gamepad2.a){
-            h.leftLatch.setPosition(0.33f);
-            h.rightLatch.setPosition(0.55f);
-        }
-        if(gamepad2.b){
-            as1 = 0;
-            as2 = 0.1564;
-            as3 = 0.791;
-        }
-        if(gamepad2.x){
-            h.leftLatch.setPosition(0.283);
-            h.rightLatch.setPosition(0.597);
-        }
         if(gamepad2.y){
-            h.leftLatch.setPosition(0.55);
-            h.rightLatch.setPosition(0.3);
+            h.armServo.setPosition(0.59f);
         }
 
-        // 1 = middle 2 = top 3 = end
-
-        // Moving forward/back
-        h.armMotor.setPower(gamepad2.right_stick_y);
-
-        // Binary movement
-        if(gamepad2.dpad_left){
-            as1 = 0;
-        }
-        if(gamepad2.dpad_right){
-            as1 = 1;
+        if(gamepad2.a){
+            h.armServo.setPosition(0.23f);
         }
 
-        // Changing position by gamepad input
-        as2 += 0.002 * -gamepad2.left_stick_y;
-        as3 += 0.005 * gamepad2.left_stick_x;
 
-        // Clamps servo values
-        as1 = clamp(0.3, 1, as1);
-        as2 = clamp(0, 0.32, as2);
-        as3 = clamp(0.41, 1, as3);
-
-        // Setting the servo position
-        h.armServo1.setPosition(as1);
-        h.armServo2.setPosition(as2);
-        h.armServo3.setPosition(as3);
-
-        // Updating telemetry
-        telemetry.addData("Middle: ", as1);
-        telemetry.addData("Swing: ", as2);
-        telemetry.addData("End: ", as3);
-
-         */
     }
-
-
-
-
-
-
-
-
-
-
 
     // Switch between encoder and non-encoder settings
     private void runEncoder(boolean withEncoder){

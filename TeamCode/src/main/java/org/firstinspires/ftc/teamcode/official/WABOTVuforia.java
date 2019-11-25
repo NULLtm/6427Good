@@ -41,7 +41,7 @@ public class WABOTVuforia {
 
     // Since ImageTarget trackables use mm to specifiy their dimensions, we must use mm for all the physical dimension.
     // We will define some constants and conversions here
-    private static final float mmPerInch        = 25.4f;
+    public static final float mmPerInch        = 25.4f;
     private static final float mmTargetHeight   = (6) * mmPerInch;          // the height of the center of the target image above the floor
 
     // Constant for Stone Target
@@ -62,18 +62,18 @@ public class WABOTVuforia {
     private float phoneYRotate    = 0;
     private float phoneZRotate    = 0;
 
-    public Vector3 position = new Vector3(0, 0, 0);
-    public Vector3 rotation = new Vector3(0, 0, 0);
+    public VectorF translation = null;
+    public Orientation rotation = null;
 
     private OpenGLMatrix lastLocation = null;
 
     // Constructor
-    public WABOTVuforia(Telemetry telemetry, String licenseKey, VuforiaLocalizer.CameraDirection camDir, HardwareMap m, boolean showScreen, boolean isPortrait, WABOTHardware myMap){
-        init(telemetry, licenseKey, showScreen, camDir, m, isPortrait, myMap);
+    public WABOTVuforia(String licenseKey, VuforiaLocalizer.CameraDirection camDir, HardwareMap m, boolean showScreen, boolean isPortrait, WABOTHardware myMap){
+        init(licenseKey, showScreen, camDir, m, isPortrait, myMap);
     }
 
     // Initializes Vuforia Engine
-    public void init(Telemetry telemetry, String key, boolean show, VuforiaLocalizer.CameraDirection camDir, HardwareMap map, boolean isPortrait, WABOTHardware myMap){
+    public void init(String key, boolean show, VuforiaLocalizer.CameraDirection camDir, HardwareMap map, boolean isPortrait, WABOTHardware myMap){
         VuforiaLocalizer.Parameters parameters;
         if(show){
             int cameraMonitorViewId = map.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", map.appContext.getPackageName());
@@ -217,14 +217,15 @@ public class WABOTVuforia {
     }
 
     // This method scans for objects ONCE when called
-    public double run(Telemetry telemetry) {
-        double returnD = 0;
+    public String run() {
         String returnStr = "NULL";
         targetVisible = false;
         for (VuforiaTrackable trackable : allTrackables) {
             if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
 
                 returnStr = trackable.getName();
+
+                targetVisible = true;
 
                 // getUpdatedRobotLocation() will return null if no new information is available since
                 // the last time that call was made, or if the trackable is not currently visible.
@@ -239,27 +240,12 @@ public class WABOTVuforia {
         // Provide feedback as to where the robot is located (if we know).
         if (targetVisible) {
             // express position (translation) of robot in inches.
-            VectorF translation = lastLocation.getTranslation();
-
-            telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
-                    translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
-
-            position.x = translation.get(0) / mmPerInch;
-            position.y = translation.get(1) / mmPerInch;
-            position.z = translation.get(2) / mmPerInch;
-
-            returnD = translation.get(0);
+            translation = lastLocation.getTranslation();
 
             // express the rotation of the robot in degrees.
-            Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-            telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
-
-            this.rotation.x = rotation.firstAngle;
-            this.rotation.y = rotation.secondAngle;
-            this.rotation.z = rotation.thirdAngle;
-            telemetry.update();
+            rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
         }
 
-        return returnD;
+        return returnStr;
     }
 }
