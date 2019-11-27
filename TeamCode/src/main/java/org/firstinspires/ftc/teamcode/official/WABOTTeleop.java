@@ -113,7 +113,8 @@ public class  WABOTTeleop extends OpMode {
     private void input(){
 
         //telemetry.addData("Heading: ", imu.getHeading());
-        telemetry.addData("Distance: ", h.ods.getDistance(DistanceUnit.CM));
+        telemetry.addData("Distance Side: ", h.ods.getDistance(DistanceUnit.CM));
+        telemetry.addData("Distance Back: ", h.ods2.getDistance(DistanceUnit.CM));
 
 
         // Triggers control intake/outtake

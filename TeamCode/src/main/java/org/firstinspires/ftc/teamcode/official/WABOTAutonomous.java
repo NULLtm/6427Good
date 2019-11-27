@@ -137,13 +137,75 @@ public class WABOTAutonomous extends LinearOpMode {
 
         // BUFFER: 25-33 cm at START
 
-        linearDrive(0.2f);
+        strafeLinear(1, 0.5f);
 
-        while(vuforia.run().equals("NULL")) {
+        while(h.ods.getDistance(DistanceUnit.CM) > 36) {
 
         }
 
         stopMotors();
+
+        sleep(1000);
+
+        linearDrive(-0.5f);
+
+        while(h.ods2.getDistance(DistanceUnit.CM) < 31 && h.ods2.getDistance(DistanceUnit.CM) > 24) {
+
+        }
+
+        while (h.ods2.getDistance(DistanceUnit.CM) > 10) {
+
+        }
+
+        linearDrive(-0.2f);
+
+        while (h.ods2.getDistance(DistanceUnit.CM) > 1.7) {
+
+        }
+
+        stopMotors();
+
+        sleep(500);
+
+        h.leftFound.setPosition(0.5f);
+        h.rightFound.setPosition(1f);
+
+        sleep(500);
+
+        runToPos( 15.25*CM_PER_INCH, 0.5f);
+
+        sleep(500);
+
+        strafeLinear(-1, 0.5);
+
+        while (h.ods.getDistance(DistanceUnit.CM) < 47) {
+
+        }
+
+        stopMotors();
+
+        turnByDegree(-90);
+
+        sleep(500);
+
+        linearDrive(-0.5f);
+
+        sleep(700);
+
+        stopMotors();
+
+        h.leftFound.setPosition(1f);
+        h.rightFound.setPosition(0.5f);
+
+        sleep(500);
+
+        linearDrive(1.0f);
+
+        sleep(1200);
+
+        stopMotors();
+
+
 
         /*strafeLinear(1, 0.8f);
         while(h.ods.getDistance(DistanceUnit.CM) > 40){
@@ -618,7 +680,7 @@ public class WABOTAutonomous extends LinearOpMode {
     // DO NOT TOUCH
     // Usable is there is a gyro installed
     private void turnByDegree (int degree) {
-        double currentPower = 0.3;
+        double currentPower = 0.5;
         boolean right;
         double turnTo;
 
