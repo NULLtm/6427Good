@@ -135,9 +135,121 @@ public class WABOTAutonomous extends LinearOpMode {
     // Actual instructions for robot! All autonomous code goes here!!!
     private void run(){
 
-        // BUFFER: 25-33 cm at START
 
-        strafeLinear(1, 0.5f);
+        // SKYSTONE AUTO
+        // DISTANCE: 35
+        // OFFSET -112
+
+        strafeLinear(1, 0.8f);
+
+        while(h.ods.getDistance(DistanceUnit.CM) > 40){
+
+        }
+
+        strafeLinear(1, 0.3f);
+
+        while(h.ods.getDistance(DistanceUnit.CM) > 36){
+
+        }
+
+        stopMotors();
+
+        sleep(1500);
+
+        int newPos = 0;
+
+        if(vuforia.run().equals("NULL")){
+            newPos = -115;
+            while (vuforia.run().equals("NULL")){
+                runToPos(8*CM_PER_INCH, 0.5f);
+                sleep(1500);
+            }
+        } else {
+            newPos = 84;
+        }
+
+        //linearDrive(-0.1f);
+
+        // 84 BACK ARM
+        // -115 FRONT ARM
+
+        while (!vuforia.run().equals("NULL") && Math.abs(vuforia.position.y-(newPos)) > 5){
+
+            float power;
+            if(Math.abs(vuforia.position.y-(newPos)) > 50){
+                power = 0.3f;
+            } else
+                power = 0.1f;
+
+            if(vuforia.position.y > newPos){
+                linearDrive(-power);
+            }
+            if(vuforia.position.y < newPos){
+                linearDrive(power);
+            }
+        }
+
+        stopMotors();
+
+        while(!vuforia.run().equals("NULL") && Math.abs(vuforia.rotationP.z-90) > 1){
+            if(vuforia.rotationP.z > 90){
+                turn(1, 0.1f);
+            }
+            if(vuforia.rotationP.z < 90){
+                turn(-1, 0.1f);
+            }
+        }
+
+        stopMotors();
+
+        sleep(500);
+
+        strafeLinear(1, 0.4f);
+
+        while(h.ods.getDistance(DistanceUnit.CM) > 10){
+
+        }
+
+        strafeLinear(1, 0.2f);
+
+        while(h.ods.getDistance(DistanceUnit.CM) > 3){
+
+        }
+
+        stopMotors();
+
+        if(newPos == -115){
+            h.frontArm.setPosition(0);
+        } else {
+            h.backArm.setPosition(1);
+        }
+
+        sleep(500);
+
+        strafeLinear(-1, 0.5f);
+
+        while (h.ods.getDistance(DistanceUnit.CM) < 36 && !h.touch.isPressed()){
+
+        }
+
+        stopMotors();
+
+        runToPos(-120, 1.0f);
+
+        h.frontArm.setPosition(1);
+        h.backArm.setPosition(0);
+
+        sleep(100);
+
+        runToPos(120, 1.0f);
+
+
+
+
+
+
+        // BUFFER: 25-33 cm at START
+        /*strafeLinear(1, 0.5f);
 
         while(h.ods.getDistance(DistanceUnit.CM) > 36) {
 
@@ -203,106 +315,7 @@ public class WABOTAutonomous extends LinearOpMode {
 
         sleep(1200);
 
-        stopMotors();
-
-
-
-        /*strafeLinear(1, 0.8f);
-        while(h.ods.getDistance(DistanceUnit.CM) > 40){
-
-        }
-
-        stopMotors();
-
-        sleep(1000);
-
-        linearDrive(0.2f);
-        while(vuforia.run().equals("NULL")){
-
-        }
-
-        stopMotors();
-
-        vuforiaPosition(-106);
-
-        sleep(1000);
-
-        strafeLinear(1, 0.5f);
-
-        while(h.ods.getDistance(DistanceUnit.CM) > 0.5*CM_PER_INCH){
-
-        }
-
-        stopMotors();
-
-        sleep(500);
-
-        h.frontArm.setPosition(0f);*/
-
-
-
-        //strafeLinear(-1, 0.6f);
-
-        //while(h.ods.getDistance(DistanceUnit.CM) > 20){
-        //}
-
-        //stopMotors();*/
-
-        /*while(opModeIsActive()){
-            if(!vuforia.run().equals("NULL")){
-                telemetry.addLine(vuforia.run());
-                telemetry.addLine("Position: X: "+vuforia.position.x+" Y: "+vuforia.position.y+" Z: "+vuforia.position.z);
-                telemetry.addLine("Rotation: X: "+vuforia.rotation.x+" Y: "+vuforia.rotation.y+" Z: "+vuforia.rotation.z);
-            } else {
-                telemetry.addLine("No Target Detected");
-            }
-
-            telemetry.update();
-        }*/
-
-        //turnByDegree(90);
-
-        //sleep(500);
-
-        //linearDrive(-0.5f);
-
-        /*while (vuforia.run().equals("NULL")) {
-        }
-
-        stopMotors();
-
-        sleep(500);
-
-        vuforiaPosition();
-
-        sleep(500);
-
-        strafeLinear(-1, 0.6f);
-
-        // Value not determined for distance
-        while(h.ods.getDistance(DistanceUnit.CM) > 5){
-        }*/
-
-        //stopMotors();
-
-        //h.frontArm.setPosition();
-
-
-
-
-        // Old auto for foundation moving
-        /*runToPos(29*CM_PER_INCH, -0.5f);
-        sleep(1000);
-        strafe(13.8*CM_PER_INCH, 1f);
-        sleep(1000);
-        //h.foundServo.setPosition(0);
-        sleep(1000);
-        runToPos(30*CM_PER_INCH, 0.3f);
-        sleep(1000);
-        //h.foundServo.setPosition(0.5f);
-        sleep(2000);
-        strafe(55*CM_PER_INCH, -1f);*/
-
+        stopMotors();*/
     }
 
 

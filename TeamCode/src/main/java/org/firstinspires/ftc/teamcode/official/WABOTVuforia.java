@@ -67,6 +67,9 @@ public class WABOTVuforia {
 
     private OpenGLMatrix lastLocation = null;
 
+    public Vector3 position = new Vector3(0, 0, 0);
+    public Vector3 rotationP = new Vector3(0, 0, 0);
+
     // Constructor
     public WABOTVuforia(String licenseKey, VuforiaLocalizer.CameraDirection camDir, HardwareMap m, boolean showScreen, boolean isPortrait, WABOTHardware myMap){
         init(licenseKey, showScreen, camDir, m, isPortrait, myMap);
@@ -242,8 +245,16 @@ public class WABOTVuforia {
             // express position (translation) of robot in inches.
             translation = lastLocation.getTranslation();
 
+            position.x = translation.get(0);
+            position.y = translation.get(1);
+            position.z = translation.get(2);
+
             // express the rotation of the robot in degrees.
             rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
+
+            rotationP.x = rotation.firstAngle;
+            rotationP.y = rotation.secondAngle;
+            rotationP.z = rotation.thirdAngle;
         }
 
         return returnStr;

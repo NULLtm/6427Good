@@ -55,9 +55,9 @@ public class  WABOTTeleop extends OpMode {
         runEncoder(false);
         //imu = new WABOTImu(hardwareMap);
 
-        //vuforia = new WABOTVuforia(VUFORIA_KEY, CAMERA_DIRECTION, hardwareMap, true, CAMERA_IS_PORTRAIT, h);
+        vuforia = new WABOTVuforia(VUFORIA_KEY, CAMERA_DIRECTION, hardwareMap, true, CAMERA_IS_PORTRAIT, h);
 
-        //vuforia.activate();
+        vuforia.activate();
         telemetry.addData("Status", "Initialized");
     }
 
@@ -115,6 +115,20 @@ public class  WABOTTeleop extends OpMode {
         //telemetry.addData("Heading: ", imu.getHeading());
         telemetry.addData("Distance Side: ", h.ods.getDistance(DistanceUnit.CM));
         telemetry.addData("Distance Back: ", h.ods2.getDistance(DistanceUnit.CM));
+
+        if(!vuforia.run().equals("NULL")) {
+            telemetry.addData("POS Z: ", vuforia.position.z);
+            telemetry.addData("POS Y: ", vuforia.position.y);
+            telemetry.addData("POS X: ", vuforia.position.x);
+            telemetry.addData("Z ROT: ", vuforia.rotationP.z);
+        }
+        if(gamepad2.dpad_up){
+            h.backArm.setPosition(0);
+        }
+
+        if(gamepad2.dpad_down){
+            h.backArm.setPosition(1);
+        }
 
 
         // Triggers control intake/outtake

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.official;
 
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
+import com.qualcomm.hardware.rev.RevTouchSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -30,6 +31,7 @@ public class WABOTHardware {
 
     public DcMotor FLMotor;
     public DcMotor FRMotor;
+    public RevTouchSensor touch;
     public DcMotor BLMotor;
     public DcMotor BRMotor;
     public DcMotor leftIntake;
@@ -65,6 +67,7 @@ public class WABOTHardware {
         webcam = hardwareMap.get(WebcamName.class, "webcam");
         FLMotor = hardwareMap.get(DcMotor.class, "FLMotor");
         FRMotor = hardwareMap.get(DcMotor.class, "FRMotor");
+        touch = hardwareMap.get(RevTouchSensor.class, "touch");
         BLMotor = hardwareMap.get(DcMotor.class, "BLMotor");
         BRMotor = hardwareMap.get(DcMotor.class, "BRMotor");
         leftIntakeServo = hardwareMap.get(Servo.class, "leftIntakeServo");
