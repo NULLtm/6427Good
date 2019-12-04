@@ -155,35 +155,25 @@ public class WABOTAutonomous extends LinearOpMode {
 
             stopMotors();
 
-            while (Math.abs(imu.getHeading()) > 0.5) {
-                double power = Math.pow(3, 0.01*Math.abs(imu.getHeading()))-0.98;
-                telemetry.addData("DIFFERENCE:", Math.abs(imu.getHeading()));
-                telemetry.update();
-                if (imu.getHeading() > 0) {
-                    turn(1, power);
-                }
-                if (imu.getHeading() < 0) {
-                    turn(-1, power);
-                }
-            }
-
-            stopMotors();
+            goToHeading(0);
 
             sleep(1500);
 
             int newPos = 0;
-            int blockNumber = 0;
+            int blockNumber = 1;
 
             if (vuforia.run().equals("NULL")) {
                 newPos = -115;
                 while (vuforia.run().equals("NULL")) {
                     blockNumber++;
-                    if(blockNumber == 5){
+                    telemetry.addData("Searching... Block #:", blockNumber);
+                    telemetry.update();
+                    if(blockNumber == 6){
                         runToPos(4 * CM_PER_INCH, 0.5f);
                     } else {
                         runToPos(8 * CM_PER_INCH, 0.5f);
                     }
-                    sleep(1500);
+                    sleep(1800);
                 }
             } else {
                 newPos = 84;
@@ -288,6 +278,30 @@ public class WABOTAutonomous extends LinearOpMode {
             h.FRMotor.setDirection(DcMotorSimple.Direction.FORWARD);
             h.FLMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         }
+    }
+
+
+
+
+
+
+
+
+
+    public void goToHeading(double heading){
+        while (Math.abs(imu.getHeading()-heading) > 0.5) {
+            double power = Math.pow(3, 0.01*Math.abs(imu.getHeading()-heading))-0.98;
+            telemetry.addData("DIFFERENCE:", Math.abs(imu.getHeading()-heading));
+            telemetry.update();
+            if (imu.getHeading() > heading) {
+                turn(1, power);
+            }
+            if (imu.getHeading() < heading) {
+                turn(-1, power);
+            }
+        }
+        stopMotors();
+
     }
 
 

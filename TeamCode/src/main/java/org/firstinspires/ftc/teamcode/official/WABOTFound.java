@@ -26,7 +26,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
  *
  *
  */
-@Autonomous(name="WABOTFound", group="WABOT")
+@Autonomous(name="WABOTFoundBlue", group="WABOT")
 public class WABOTFound extends LinearOpMode {
 
 
@@ -153,7 +153,7 @@ public class WABOTFound extends LinearOpMode {
 
         linearDrive(-0.2f);
 
-        while (h.ods2.getDistance(DistanceUnit.CM) > 1.7) {
+        while (h.ods2.getDistance(DistanceUnit.CM) > 3.3) {
 
         }
 
@@ -166,7 +166,7 @@ public class WABOTFound extends LinearOpMode {
 
         sleep(500);
 
-        runToPos( 15.25*CM_PER_INCH, 0.5f);
+        runToPos( 17*CM_PER_INCH, 0.5f);
 
         sleep(500);
 
@@ -196,6 +196,10 @@ public class WABOTFound extends LinearOpMode {
         linearDrive(1.0f);
 
         sleep(1200);
+
+        strafeLinear(-1, 1.0f);
+
+        sleep(700);
 
         stopMotors();
     }
