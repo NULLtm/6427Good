@@ -116,12 +116,12 @@ public class  WABOTTeleop extends OpMode {
         telemetry.addData("Distance Side: ", h.ods.getDistance(DistanceUnit.CM));
         telemetry.addData("Distance Back: ", h.ods2.getDistance(DistanceUnit.CM));
 
-        if(!vuforia.run().equals("NULL")) {
+        /*if(!vuforia.run().equals("NULL")) {
             telemetry.addData("POS Z: ", vuforia.position.z);
             telemetry.addData("POS Y: ", vuforia.position.y);
             telemetry.addData("POS X: ", vuforia.position.x);
             telemetry.addData("Z ROT: ", vuforia.rotationP.z);
-        }
+        }*/
         if(gamepad2.dpad_up){
             h.backArm.setPosition(0);
         }

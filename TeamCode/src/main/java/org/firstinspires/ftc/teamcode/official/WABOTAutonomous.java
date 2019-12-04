@@ -135,187 +135,130 @@ public class WABOTAutonomous extends LinearOpMode {
     // Actual instructions for robot! All autonomous code goes here!!!
     private void run(){
 
-
         // SKYSTONE AUTO
         // DISTANCE: 35
         // OFFSET -112
 
-        strafeLinear(1, 0.8f);
+        for(int x = 0; x < 2; x++) {
 
-        while(h.ods.getDistance(DistanceUnit.CM) > 40){
+            strafeLinear(1, 0.8f);
 
-        }
+            while (h.ods.getDistance(DistanceUnit.CM) > 40) {
 
-        strafeLinear(1, 0.3f);
-
-        while(h.ods.getDistance(DistanceUnit.CM) > 36){
-
-        }
-
-        stopMotors();
-
-        sleep(1500);
-
-        int newPos = 0;
-
-        if(vuforia.run().equals("NULL")){
-            newPos = -115;
-            while (vuforia.run().equals("NULL")){
-                runToPos(8*CM_PER_INCH, 0.5f);
-                sleep(1500);
             }
-        } else {
-            newPos = 84;
-        }
 
-        //linearDrive(-0.1f);
+            strafeLinear(1, 0.3f);
 
-        // 84 BACK ARM
-        // -115 FRONT ARM
+            while (h.ods.getDistance(DistanceUnit.CM) > 36) {
 
-        while (!vuforia.run().equals("NULL") && Math.abs(vuforia.position.y-(newPos)) > 5){
-
-            float power;
-            if(Math.abs(vuforia.position.y-(newPos)) > 50){
-                power = 0.3f;
-            } else
-                power = 0.1f;
-
-            if(vuforia.position.y > newPos){
-                linearDrive(-power);
             }
-            if(vuforia.position.y < newPos){
-                linearDrive(power);
+
+            stopMotors();
+
+            while (Math.abs(imu.getHeading()) > 0.5) {
+                double power = Math.pow(3, 0.01*Math.abs(imu.getHeading()))-0.98;
+                telemetry.addData("DIFFERENCE:", Math.abs(imu.getHeading()));
+                telemetry.update();
+                if (imu.getHeading() > 0) {
+                    turn(1, power);
+                }
+                if (imu.getHeading() < 0) {
+                    turn(-1, power);
+                }
             }
-        }
 
-        stopMotors();
+            stopMotors();
 
-        while(!vuforia.run().equals("NULL") && Math.abs(vuforia.rotationP.z-90) > 1){
-            if(vuforia.rotationP.z > 90){
-                turn(1, 0.1f);
+            sleep(1500);
+
+            int newPos = 0;
+            int blockNumber = 0;
+
+            if (vuforia.run().equals("NULL")) {
+                newPos = -115;
+                while (vuforia.run().equals("NULL")) {
+                    blockNumber++;
+                    if(blockNumber == 5){
+                        runToPos(4 * CM_PER_INCH, 0.5f);
+                    } else {
+                        runToPos(8 * CM_PER_INCH, 0.5f);
+                    }
+                    sleep(1500);
+                }
+            } else {
+                newPos = 84;
             }
-            if(vuforia.rotationP.z < 90){
-                turn(-1, 0.1f);
+
+            //linearDrive(-0.1f);
+
+            // 84 BACK ARM
+            // -115 FRONT ARM
+
+            while (!vuforia.run().equals("NULL") && Math.abs(vuforia.position.y - (newPos)) > 5) {
+
+                float power;
+                if (Math.abs(vuforia.position.y - (newPos)) > 50) {
+                    power = 0.3f;
+                } else
+                    power = 0.1f;
+
+                if (vuforia.position.y > newPos) {
+                    linearDrive(-power);
+                }
+                if (vuforia.position.y < newPos) {
+                    linearDrive(power);
+                }
             }
+
+            stopMotors();
+
+            sleep(500);
+
+            strafeLinear(1, 0.4f);
+
+            while (h.ods.getDistance(DistanceUnit.CM) > 10) {
+
+            }
+
+            strafeLinear(1, 0.2f);
+
+            while (h.ods.getDistance(DistanceUnit.CM) > 3) {
+
+            }
+
+            stopMotors();
+
+            if (newPos == -115) {
+                h.frontArm.setPosition(0);
+            } else {
+                h.backArm.setPosition(1);
+            }
+
+            sleep(500);
+
+            strafeLinear(-1, 0.5f);
+
+            //while (h.ods.getDistance(DistanceUnit.CM) < 36 && !h.touch.isPressed()) {
+
+            //}
+
+            strafe(-35, 0.5f);
+
+            stopMotors();
+
+            runToPos(-180, 1.0f);
+
+            h.frontArm.setPosition(1);
+            h.backArm.setPosition(0);
+
+            sleep(100);
+
+            runToPos(190, 1.0f);
+
+            vuforia.clearVu();
+
+            sleep(500);
         }
-
-        stopMotors();
-
-        sleep(500);
-
-        strafeLinear(1, 0.4f);
-
-        while(h.ods.getDistance(DistanceUnit.CM) > 10){
-
-        }
-
-        strafeLinear(1, 0.2f);
-
-        while(h.ods.getDistance(DistanceUnit.CM) > 3){
-
-        }
-
-        stopMotors();
-
-        if(newPos == -115){
-            h.frontArm.setPosition(0);
-        } else {
-            h.backArm.setPosition(1);
-        }
-
-        sleep(500);
-
-        strafeLinear(-1, 0.5f);
-
-        while (h.ods.getDistance(DistanceUnit.CM) < 36 && !h.touch.isPressed()){
-
-        }
-
-        stopMotors();
-
-        runToPos(-120, 1.0f);
-
-        h.frontArm.setPosition(1);
-        h.backArm.setPosition(0);
-
-        sleep(100);
-
-        runToPos(120, 1.0f);
-
-
-
-
-
-
-        // BUFFER: 25-33 cm at START
-        /*strafeLinear(1, 0.5f);
-
-        while(h.ods.getDistance(DistanceUnit.CM) > 36) {
-
-        }
-
-        stopMotors();
-
-        sleep(1000);
-
-        linearDrive(-0.5f);
-
-        while(h.ods2.getDistance(DistanceUnit.CM) < 31 && h.ods2.getDistance(DistanceUnit.CM) > 24) {
-
-        }
-
-        while (h.ods2.getDistance(DistanceUnit.CM) > 10) {
-
-        }
-
-        linearDrive(-0.2f);
-
-        while (h.ods2.getDistance(DistanceUnit.CM) > 1.7) {
-
-        }
-
-        stopMotors();
-
-        sleep(500);
-
-        h.leftFound.setPosition(0.5f);
-        h.rightFound.setPosition(1f);
-
-        sleep(500);
-
-        runToPos( 15.25*CM_PER_INCH, 0.5f);
-
-        sleep(500);
-
-        strafeLinear(-1, 0.5);
-
-        while (h.ods.getDistance(DistanceUnit.CM) < 47) {
-
-        }
-
-        stopMotors();
-
-        turnByDegree(-90);
-
-        sleep(500);
-
-        linearDrive(-0.5f);
-
-        sleep(700);
-
-        stopMotors();
-
-        h.leftFound.setPosition(1f);
-        h.rightFound.setPosition(0.5f);
-
-        sleep(500);
-
-        linearDrive(1.0f);
-
-        sleep(1200);
-
-        stopMotors();*/
     }
 
 
@@ -607,7 +550,7 @@ public class WABOTAutonomous extends LinearOpMode {
 
     // DO NOT TOUCH
     // Turns robot
-    private void turn (int direction, float power){
+    private void turn (int direction, double power){
         if(direction == -1){
             h.FLMotor.setPower(-power);
             h.BRMotor.setPower(power);

@@ -259,4 +259,8 @@ public class WABOTVuforia {
 
         return returnStr;
     }
+
+    public void clearVu(){
+        lastLocation = null;
+    }
 }
