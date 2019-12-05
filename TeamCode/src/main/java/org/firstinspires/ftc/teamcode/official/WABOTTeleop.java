@@ -116,12 +116,12 @@ public class  WABOTTeleop extends OpMode {
         telemetry.addData("Distance Side: ", h.ods.getDistance(DistanceUnit.CM));
         telemetry.addData("Distance Back: ", h.ods2.getDistance(DistanceUnit.CM));
 
-        /*if(!vuforia.run().equals("NULL")) {
+        if(!vuforia.run().equals("NULL")) {
             telemetry.addData("POS Z: ", vuforia.position.z);
             telemetry.addData("POS Y: ", vuforia.position.y);
             telemetry.addData("POS X: ", vuforia.position.x);
             telemetry.addData("Z ROT: ", vuforia.rotationP.z);
-        }*/
+        }
         if(gamepad2.dpad_up){
             h.backArm.setPosition(0);
         }
@@ -147,6 +147,22 @@ public class  WABOTTeleop extends OpMode {
         }
         h.leftIntake.setPower(-intakePow);
         h.rightIntake.setPower(intakePow);
+
+        double rightSlidePower = -gamepad2.left_stick_y;
+        double leftSlidePower = -gamepad2.left_stick_y;
+
+        if(gamepad2.left_bumper && !gamepad2.right_bumper){
+            leftSlidePower *= 0.5;
+            rightSlidePower *= 0.5;
+        }
+        if(gamepad2.right_bumper && !gamepad2.left_bumper){
+            leftSlidePower *= 0.5;
+            rightSlidePower *= 0.5;
+        }
+        if(gamepad2.right_bumper && gamepad2.left_bumper){
+            leftSlidePower *= 0.25;
+            rightSlidePower *= 0.25;
+        }
 
         h.slideMotorLeft.setPower(-gamepad2.left_stick_y);
         h.slideMotorRight.setPower(-gamepad2.left_stick_y);
@@ -174,12 +190,6 @@ public class  WABOTTeleop extends OpMode {
             h.linearServoLeft.setPosition(0.42);
             h.linearServoRight.setPosition(0.63);
         }
-
-//        if(gamepad2.back){
-//            h.linearServoLeft.setPosition(0.49);
-//            h.linearServoRight.setPosition(0.57);
-//        }
-
 
         if(gamepad1.dpad_right){
             h.leftIntakeServo.setPosition(0.74);
@@ -213,8 +223,6 @@ public class  WABOTTeleop extends OpMode {
         if(gamepad2.a){
             h.armServo.setPosition(0.23f);
         }
-
-
     }
 
     // Switch between encoder and non-encoder settings

@@ -139,116 +139,207 @@ public class WABOTAutonomous extends LinearOpMode {
         // DISTANCE: 35
         // OFFSET -112
 
-        for(int x = 0; x < 2; x++) {
+        strafeLinear(1, 1.0f);
 
-            strafeLinear(1, 0.8f);
+        while (getAverageDistance() > 40) {
 
-            while (h.ods.getDistance(DistanceUnit.CM) > 40) {
-
-            }
-
-            strafeLinear(1, 0.3f);
-
-            while (h.ods.getDistance(DistanceUnit.CM) > 36) {
-
-            }
-
-            stopMotors();
-
-            goToHeading(0);
-
-            sleep(1500);
-
-            int newPos = 0;
-            int blockNumber = 1;
-
-            if (vuforia.run().equals("NULL")) {
-                newPos = -115;
-                while (vuforia.run().equals("NULL")) {
-                    blockNumber++;
-                    telemetry.addData("Searching... Block #:", blockNumber);
-                    telemetry.update();
-                    if(blockNumber == 6){
-                        runToPos(4 * CM_PER_INCH, 0.5f);
-                    } else {
-                        runToPos(8 * CM_PER_INCH, 0.5f);
-                    }
-                    sleep(1800);
-                }
-            } else {
-                newPos = 84;
-            }
-
-            //linearDrive(-0.1f);
-
-            // 84 BACK ARM
-            // -115 FRONT ARM
-
-            while (!vuforia.run().equals("NULL") && Math.abs(vuforia.position.y - (newPos)) > 5) {
-
-                float power;
-                if (Math.abs(vuforia.position.y - (newPos)) > 50) {
-                    power = 0.3f;
-                } else
-                    power = 0.1f;
-
-                if (vuforia.position.y > newPos) {
-                    linearDrive(-power);
-                }
-                if (vuforia.position.y < newPos) {
-                    linearDrive(power);
-                }
-            }
-
-            stopMotors();
-
-            sleep(500);
-
-            strafeLinear(1, 0.4f);
-
-            while (h.ods.getDistance(DistanceUnit.CM) > 10) {
-
-            }
-
-            strafeLinear(1, 0.2f);
-
-            while (h.ods.getDistance(DistanceUnit.CM) > 3) {
-
-            }
-
-            stopMotors();
-
-            if (newPos == -115) {
-                h.frontArm.setPosition(0);
-            } else {
-                h.backArm.setPosition(1);
-            }
-
-            sleep(500);
-
-            strafeLinear(-1, 0.5f);
-
-            //while (h.ods.getDistance(DistanceUnit.CM) < 36 && !h.touch.isPressed()) {
-
-            //}
-
-            strafe(-35, 0.5f);
-
-            stopMotors();
-
-            runToPos(-180, 1.0f);
-
-            h.frontArm.setPosition(1);
-            h.backArm.setPosition(0);
-
-            sleep(100);
-
-            runToPos(190, 1.0f);
-
-            vuforia.clearVu();
-
-            sleep(500);
         }
+
+        strafeLinear(1, 0.3f);
+
+        while (getAverageDistance() > 36) {
+
+        }
+
+        stopMotors();
+
+        goToHeading(0);
+
+        sleep(1000);
+
+        int newPos = 0;
+        int blockNumber = 1;
+
+        if (vuforia.run().equals("NULL")) {
+            newPos = -115;
+            while (vuforia.run().equals("NULL") && blockNumber <= 6) {
+                blockNumber++;
+                telemetry.addData("Searching... Block #:", blockNumber);
+                telemetry.update();
+                if(blockNumber == 6){
+                    runToPos(2 * CM_PER_INCH, 1.0f);
+                } else {
+                    runToPos(8 * CM_PER_INCH, 1.0f);
+                }
+                sleep(1000);
+            }
+        } else {
+            newPos = 90;
+        }
+
+        //linearDrive(-0.1f);
+
+        // 90 BACK ARM
+        // -115 FRONT ARM
+
+        while (!vuforia.run().equals("NULL") && Math.abs(vuforia.position.y - (newPos)) > 5) {
+
+            float power;
+            if (Math.abs(vuforia.position.y - (newPos)) > 50) {
+                power = 0.3f;
+            } else
+                power = 0.1f;
+
+            if (vuforia.position.y > newPos) {
+                linearDrive(-power);
+            }
+            if (vuforia.position.y < newPos) {
+                linearDrive(power);
+            }
+        }
+
+        stopMotors();
+
+        strafeLinear(1, 0.6f);
+
+        while (getAverageDistance() > 10) {
+
+        }
+
+        strafeLinear(1, 0.2f);
+
+        while (getAverageDistance() > 2.5) {
+
+        }
+
+        stopMotors();
+
+        if (newPos == -115) {
+            h.frontArm.setPosition(0);
+        } else {
+            h.backArm.setPosition(1);
+        }
+
+        sleep(500);
+
+        strafeLinear(-1, 0.5f);
+
+        strafe(-35, 0.5f);
+
+        stopMotors();
+
+        runToPos(-180, 1.0f);
+
+        h.frontArm.setPosition(1);
+        h.backArm.setPosition(0);
+
+        sleep(100);
+
+        runToPos(190, 1.0f);
+
+        vuforia.clearVu();
+
+        sleep(500);
+
+        strafeLinear(1, 0.8f);
+
+        while (getAverageDistance() > 40) {
+
+        }
+
+        strafeLinear(1, 0.3f);
+
+        while (getAverageDistance() > 36) {
+
+        }
+
+        stopMotors();
+
+        newPos = 0;
+        blockNumber = 1;
+
+        if (vuforia.run().equals("NULL")) {
+            newPos = -115;
+            while (vuforia.run().equals("NULL")) {
+                blockNumber++;
+                telemetry.addData("Searching... Block #:", blockNumber);
+                telemetry.update();
+                if(blockNumber == 6){
+                    runToPos(4 * CM_PER_INCH, 0.8f);
+                } else {
+                    runToPos(8 * CM_PER_INCH, 0.8f);
+                }
+                sleep(1000);
+            }
+        } else {
+            newPos = 90;
+        }
+
+        //linearDrive(-0.1f);
+
+        // 84 BACK ARM
+        // -115 FRONT ARM
+
+        while (!vuforia.run().equals("NULL") && Math.abs(vuforia.position.y - (newPos)) > 5) {
+
+            float power;
+            if (Math.abs(vuforia.position.y - (newPos)) > 50) {
+                power = 0.3f;
+            } else
+                power = 0.1f;
+
+            if (vuforia.position.y > newPos) {
+                linearDrive(-power);
+            }
+            if (vuforia.position.y < newPos) {
+                linearDrive(power);
+            }
+        }
+
+        stopMotors();
+
+        sleep(500);
+
+        strafeLinear(1, 0.6f);
+
+        while (getAverageDistance() > 10) {
+
+        }
+
+        strafeLinear(1, 0.2f);
+
+        while (getAverageDistance() > 2.5) {
+
+        }
+
+        stopMotors();
+
+        if (newPos == -115) {
+            h.frontArm.setPosition(0);
+        } else {
+            h.backArm.setPosition(1);
+        }
+
+        sleep(500);
+
+        strafeLinear(-1, 0.5f);
+
+        //while (h.ods.getDistance(DistanceUnit.CM) < 36 && !h.touch.isPressed()) {
+
+        //}
+
+        strafe(-35, 0.5f);
+
+        stopMotors();
+
+        runToPos(-180, 1.0f);
+
+        h.frontArm.setPosition(1);
+        h.backArm.setPosition(0);
+
+        sleep(100);
+
+        runToPos(50, 1.0f);
     }
 
 
@@ -278,6 +369,16 @@ public class WABOTAutonomous extends LinearOpMode {
             h.FRMotor.setDirection(DcMotorSimple.Direction.FORWARD);
             h.FLMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         }
+    }
+
+
+
+
+
+    public double getAverageDistance(){
+        double d = h.ods.getDistance(DistanceUnit.CM)+ h.ods3.getDistance(DistanceUnit.CM);
+        d /= 2;
+        return d;
     }
 
 

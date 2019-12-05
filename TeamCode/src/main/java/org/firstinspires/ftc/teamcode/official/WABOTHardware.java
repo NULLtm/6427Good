@@ -42,6 +42,7 @@ public class WABOTHardware {
     public Servo frontArm;
     public Rev2mDistanceSensor ods;
     public Rev2mDistanceSensor ods2;
+    public Rev2mDistanceSensor ods3;
     public WebcamName webcam;
     public Servo linearServoLeft;
     public Servo linearServoRight;
@@ -82,6 +83,7 @@ public class WABOTHardware {
         frontArm = hardwareMap.get(Servo.class, "frontArm");
         ods = hardwareMap.get(Rev2mDistanceSensor.class, "ods");
         ods2 = hardwareMap.get(Rev2mDistanceSensor.class, "ods2");
+        ods3 = hardwareMap.get(Rev2mDistanceSensor.class, "ods3");
         linearServoLeft = hardwareMap.get(Servo.class, "linearServoLeft");
         linearServoRight = hardwareMap.get(Servo.class, "linearServoRight");
         slideMotorLeft = hardwareMap.get(DcMotor.class, "slideMotorLeft");

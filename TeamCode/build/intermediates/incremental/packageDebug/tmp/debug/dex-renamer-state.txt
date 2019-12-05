@@ -1,4 +1,4 @@
-#Tue Dec 03 17:27:21 PST 2019
+#Wed Dec 04 17:18:28 PST 2019
 base.0=C\:\\Users\\Wrightang\\Documents\\GitHub\\6427Good\\TeamCode\\build\\intermediates\\dex\\debug\\mergeDexDebug\\out
 path.0=classes.dex
 renamed.0=classes.dex
