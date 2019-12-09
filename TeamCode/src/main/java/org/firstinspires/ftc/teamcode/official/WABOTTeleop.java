@@ -55,9 +55,9 @@ public class  WABOTTeleop extends OpMode {
         runEncoder(false);
         //imu = new WABOTImu(hardwareMap);
 
-        vuforia = new WABOTVuforia(VUFORIA_KEY, CAMERA_DIRECTION, hardwareMap, true, CAMERA_IS_PORTRAIT, h);
+        //vuforia = new WABOTVuforia(VUFORIA_KEY, CAMERA_DIRECTION, hardwareMap, true, CAMERA_IS_PORTRAIT, h);
 
-        vuforia.activate();
+        //vuforia.activate();
         telemetry.addData("Status", "Initialized");
     }
 
@@ -80,8 +80,8 @@ public class  WABOTTeleop extends OpMode {
         h.rightFound.setPosition(0.5f);
         h.backArm.setPosition(0.45f);
         h.frontArm.setPosition(1f);
-        h.leftIntakeServo.setPosition(0.74);
-        h.rightIntakeServo.setPosition(0.558);
+        //h.leftIntakeServo.setPosition(0.74);
+        // h.rightIntakeServo.setPosition(0.558);
     }
 
     /*
@@ -113,21 +113,29 @@ public class  WABOTTeleop extends OpMode {
     private void input(){
 
         //telemetry.addData("Heading: ", imu.getHeading());
-        telemetry.addData("Distance Side: ", h.ods.getDistance(DistanceUnit.CM));
-        telemetry.addData("Distance Back: ", h.ods2.getDistance(DistanceUnit.CM));
+        telemetry.addData("Distance Side: ", getAverageDistance());
 
-        if(!vuforia.run().equals("NULL")) {
+        /*if(!vuforia.run().equals("NULL")) {
             telemetry.addData("POS Z: ", vuforia.position.z);
             telemetry.addData("POS Y: ", vuforia.position.y);
             telemetry.addData("POS X: ", vuforia.position.x);
             telemetry.addData("Z ROT: ", vuforia.rotationP.z);
-        }
+        }*/
+
         if(gamepad2.dpad_up){
-            h.backArm.setPosition(0);
+            h.backArm.setPosition(0.45); //0.45 or else linear slides hit --lou
         }
 
         if(gamepad2.dpad_down){
             h.backArm.setPosition(1);
+        }
+
+        if(gamepad2.dpad_right){
+            h.frontArm.setPosition(1);
+        }
+
+        if(gamepad2.dpad_left){
+            h.frontArm.setPosition(0);
         }
 
 
@@ -164,46 +172,45 @@ public class  WABOTTeleop extends OpMode {
             rightSlidePower *= 0.25;
         }
 
-        h.slideMotorLeft.setPower(-gamepad2.left_stick_y);
-        h.slideMotorRight.setPower(-gamepad2.left_stick_y);
+        h.slideMotorLeft.setPower(leftSlidePower);
+        h.slideMotorRight.setPower(rightSlidePower);
 
 
         // TESTING SERVO POSITIONS
-        /*
-        servoPosLeft += gamepad2.right_stick_y*0.001;
-        servoPosRight += gamepad2.left_stick_y*0.001;
 
-        h.leftIntakeServo.setPosition(servoPosLeft);
-        h.rightIntakeServo.setPosition(servoPosRight);
-
-        telemetry.addData("Servo Pos LEFT: ", servoPosLeft);
-        telemetry.addData("Servo Pos RIGHT: ", servoPosRight);
-         */
-
+//        servoPosLeft += gamepad2.right_stick_y*0.008;
+//        servoPosRight += gamepad2.left_stick_y*0.008;
+//
+//        h.leftIntakeServo.setPosition(servoPosLeft);
+//        h.rightIntakeServo.setPosition(servoPosRight);
+//
+//        telemetry.addData("Servo Pos LEFT: ", servoPosLeft);
+//        telemetry.addData("Servo Pos RIGHT: ", servoPosRight);
 
 
-        if(gamepad2.right_stick_y < -0.5){
+
+        if(gamepad2.right_stick_y < -0.5){ //out pos
             h.linearServoLeft.setPosition(0.84);
-            h.linearServoRight.setPosition(0.20);
+            h.linearServoRight.setPosition(0.23);
         }
-        if(gamepad2.right_stick_y > 0.5){
-            h.linearServoLeft.setPosition(0.42);
-            h.linearServoRight.setPosition(0.63);
+        if(gamepad2.right_stick_y > 0.5){ //in pos
+            h.linearServoLeft.setPosition(0.40);
+            h.linearServoRight.setPosition(0.65);
         }
 
         if(gamepad1.dpad_right){
-            h.leftIntakeServo.setPosition(0.74);
-            h.rightIntakeServo.setPosition(0.558);
+            h.leftIntakeServo.setPosition(h.LEFTINTAKESERVO_IN);
+            h.rightIntakeServo.setPosition(h.RIGHTINTAKESERVO_IN);
         }
 
-        if(gamepad1.dpad_left){
-            h.leftIntakeServo.setPosition(0.343);
-            h.rightIntakeServo.setPosition(0.854);
-        }
+        /*if(gamepad1.dpad_left){
+            h.leftIntakeServo.setPosition(h.LEFTINTAKESERVO_OUT);
+            h.rightIntakeServo.setPosition(h.RIGHTINTAKESERVO_OUT);
+        }*/
 
         if(gamepad1.dpad_up){
-            h.leftIntakeServo.setPosition(0.55);
-            h.rightIntakeServo.setPosition(0.713);
+            h.leftIntakeServo.setPosition(h.LEFTINTAKESERVO_INTAKE);
+            h.rightIntakeServo.setPosition(h.RIGHTINTAKESERVO_INTAKE);
         }
 
         if(gamepad1.x){
@@ -245,6 +252,23 @@ public class  WABOTTeleop extends OpMode {
 
     }
 
+    public double getAverageDistance(){
+        double d = h.ods.getDistance(DistanceUnit.CM)+ h.ods3.getDistance(DistanceUnit.CM);
+        d /= 2;
+
+        double ratio = h.ods.getDistance(DistanceUnit.CM) / h.ods3.getDistance(DistanceUnit.CM) * 100;
+
+        if(ratio < 75 || ratio > 125){
+            if(h.ods.getDistance(DistanceUnit.CM) > h.ods3.getDistance(DistanceUnit.CM)){
+                return h.ods3.getDistance(DistanceUnit.CM);
+            } else {
+                return h.ods.getDistance(DistanceUnit.CM);
+            }
+        } else {
+            return d;
+        }
+    }
+
     // Tank drive controls
     private void tankDrive(){
         double leftStickY = gamepad1.left_stick_y;
@@ -262,15 +286,22 @@ public class  WABOTTeleop extends OpMode {
         // Input
         double leftStickX = gamepad1.left_stick_x;
         double leftStickY = -gamepad1.left_stick_y;
+        double rightStickY = -gamepad1.right_stick_y;
         double rightStickX = gamepad1.right_stick_x;
 
         // Calculating angle between X and Y inputs on the stick
         double angle = Math.atan2(leftStickY, leftStickX);
         angle = Math.toDegrees(angle);
         angle = Math.abs(angle);
+        double angleS = Math.atan2(rightStickY, rightStickX);
+        angleS = Math.toDegrees(angleS);
+        angleS = Math.abs(angleS);
         // Altering value for sake of the program
         if(leftStickY < 0){
             angle = 360 - angle;
+        }
+        if(rightStickY < 0){
+            angleS = 360 - angleS;
         }
 
         // Power variables
@@ -292,10 +323,28 @@ public class  WABOTTeleop extends OpMode {
             quadrant = 4;
         }
 
+        int quadrantS = 0;
+
+        // Calculating current quadrant
+        if(rightStickX == 0 && rightStickY == 0){
+            quadrantS = 0;
+        } else if(angleS >= 0 && angleS <= 90){
+            quadrantS = 1;
+        } else if(angleS > 90 && angleS <= 180){
+            quadrantS = 2;
+        } else if(angleS > 180 && angleS <= 270){
+            quadrantS = 3;
+        } else if(angleS > 270 && angleS <= 360) {
+            quadrantS = 4;
+        }
+
         // Getting our composite input used as a backbone value for movement
         // Short explanation: Always a net Y value, but uses a different percent from each direction based on Y value
         double sampleY = leftStickY;
+        double sampleYS = rightStickY;
+
         double magnitude = Math.abs(sampleY) + Math.abs((1-Math.abs(sampleY))*leftStickX);
+        double magnitudeS = Math.abs(sampleYS) + Math.abs((1-Math.abs(sampleYS))*rightStickX);
 
         // Based on the quadrant, change the underlying function each wheel depends on
         if(quadrant == 1){
@@ -316,8 +365,8 @@ public class  WABOTTeleop extends OpMode {
         } else if(quadrant == 4){
             v1 = -1*magnitude;
             v3 = -1*magnitude;
-            v2 = -1*magnitude*((315-angle)/315);
-            v4 = -1*magnitude*((315-angle)/315);
+            v2 = -1*magnitude*((315-angle)/45);
+            v4 = -1*magnitude*((315-angle)/45);
         } else if(quadrant == 0){
             v1 = 0;
             v2 = 0;
@@ -325,7 +374,40 @@ public class  WABOTTeleop extends OpMode {
             v4 = 0;
         }
 
+        /*
+
+        if(magnitudeS != 0) {
+            if (quadrantS == 1) {
+                v1 = magnitudeS * ((angleS - 45) / 45);
+                v3 = magnitudeS;
+                v2 = magnitudeS;
+                v4 = magnitudeS * ((angleS - 45) / 45);
+            } else if (quadrantS == 2) {
+                v1 = magnitudeS;
+                v3 = magnitudeS * ((135 - angleS) / 45);
+                v2 = magnitudeS * ((135 - angleS) / 45);
+                v4 = magnitudeS;
+            } else if (quadrantS == 3) {
+                v1 = magnitudeS * ((225 - angleS) / 45);
+                v3 = -1 * magnitudeS;
+                v2 = -1 * magnitudeS;
+                v4 = magnitudeS * ((255 - angleS) / 45);
+            } else if (quadrantS == 4) {
+                v1 = -1 * magnitudeS;
+                v3 = -1 * magnitudeS * ((angleS - 315) / 45);
+                v2 = -1 * magnitudeS * ((angleS - 315) / 45);
+                v4 = -1 * magnitudeS;
+            } else if (quadrantS == 0) {
+                v1 = 0;
+                v2 = 0;
+                v3 = 0;
+                v4 = 0;
+            }
+        }
+        */
+
         // If not using omni-drive, switch to normal turn
+        // OLD CODE, KEEP PLEASSSE
         if(rightStickX != 0){
             v1 = -1*rightStickX;
             v2 = rightStickX;

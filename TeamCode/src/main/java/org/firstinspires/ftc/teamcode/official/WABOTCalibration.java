@@ -44,8 +44,7 @@ import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import java.io.File;
 import java.util.Locale;
 
-@TeleOp(name = "Sensor: BNO055 IMU Calibration", group = "Sensor")
-@Disabled                            // Uncomment this to add to the opmode list
+@TeleOp(name = "WABOTIMUCalibration", group = "Sensor") // Uncomment this to add to the opmode list
 public class WABOTCalibration extends LinearOpMode
 {
     //----------------------------------------------------------------------------------------------

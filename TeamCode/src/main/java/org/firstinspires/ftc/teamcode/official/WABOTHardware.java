@@ -21,11 +21,18 @@ public class WABOTHardware {
 
     // NEW
     // backArm: 1 = DOWN, 0 = UP
-    // frontArm: 1 = DOWN, 0 = UP
+    // frontArm: 0 = DOWN, 1 = UP
     // leftFound: 1 = UP, 0.5 = DOWN
     // rightFound: 1 = DOWN, 0.5 = UP
-    // leftIntakeServo: 0.343 = OUT, 0.74 = IN, 0.55 = INTAKE
-    // rightIntakeServo: 0.558 = IN, 0.854 = OUT, 0.713 = INTAKE
+    // leftIntakeServo: 0.62 = OUT, 1 = IN, 0.8 = INTAKE
+    // rightIntakeServo: 0.558 = IN, 0.854 = OUT, 0.68 = INTAKE
+
+    final double LEFTINTAKESERVO_IN = 1;
+    final double LEFTINTAKESERVO_OUT = 0.62;
+    final double LEFTINTAKESERVO_INTAKE = 0.76;
+    final double RIGHTINTAKESERVO_IN = 0.558;
+    final double RIGHTINTAKESERVO_OUT = 0.854;
+    final double RIGHTINTAKESERVO_INTAKE = 0.72;
 
     // 850-2150 RANGE
 
@@ -55,8 +62,8 @@ public class WABOTHardware {
     public Servo rightIntakeMini;
 
 
-
-
+//hi owen
+//you're adopted
     protected WABOTHardware(HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap;
         initializeMap();

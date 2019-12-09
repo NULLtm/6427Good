@@ -104,7 +104,7 @@ public class WABOTAutonomous extends LinearOpMode {
         h.rightFound.setPosition(0.5f);
         h.backArm.setPosition(0f);
         h.frontArm.setPosition(1f);
-        h.leftIntakeServo.setPosition(0.74);
+        h.leftIntakeServo.setPosition(1f);
         h.rightIntakeServo.setPosition(0.558);
 
         vuforia = new WABOTVuforia(VUFORIA_KEY, CAMERA_DIRECTION, hardwareMap, true, CAMERA_IS_PORTRAIT, h);
@@ -141,13 +141,13 @@ public class WABOTAutonomous extends LinearOpMode {
 
         strafeLinear(1, 1.0f);
 
-        while (getAverageDistance() > 40) {
+        while (getAverageDistance() > 39) {
 
         }
 
         strafeLinear(1, 0.3f);
 
-        while (getAverageDistance() > 36) {
+        while (getAverageDistance() > 35) {
 
         }
 
@@ -161,26 +161,24 @@ public class WABOTAutonomous extends LinearOpMode {
         int blockNumber = 1;
 
         if (vuforia.run().equals("NULL")) {
-            newPos = -115;
-            while (vuforia.run().equals("NULL") && blockNumber <= 6) {
+            newPos = -120;
+            while (vuforia.run().equals("NULL") && blockNumber < 6) {
                 blockNumber++;
                 telemetry.addData("Searching... Block #:", blockNumber);
                 telemetry.update();
                 if(blockNumber == 6){
-                    runToPos(2 * CM_PER_INCH, 1.0f);
+                    runToPos(1.5*CM_PER_INCH, 0.3f);
                 } else {
-                    runToPos(8 * CM_PER_INCH, 1.0f);
+                    runToPos(7 * CM_PER_INCH, 0.8f);
                 }
                 sleep(1000);
             }
         } else {
-            newPos = 90;
+            newPos = 85;
         }
 
-        //linearDrive(-0.1f);
-
-        // 90 BACK ARM
-        // -115 FRONT ARM
+        // 85 BACK ARM
+        // -120 FRONT ARM
 
         while (!vuforia.run().equals("NULL") && Math.abs(vuforia.position.y - (newPos)) > 5) {
 
@@ -208,13 +206,13 @@ public class WABOTAutonomous extends LinearOpMode {
 
         strafeLinear(1, 0.2f);
 
-        while (getAverageDistance() > 2.5) {
+        while (getAverageDistance() > 2) {
 
         }
 
         stopMotors();
 
-        if (newPos == -115) {
+        if (newPos == -120) {
             h.frontArm.setPosition(0);
         } else {
             h.backArm.setPosition(1);
@@ -222,11 +220,7 @@ public class WABOTAutonomous extends LinearOpMode {
 
         sleep(500);
 
-        strafeLinear(-1, 0.5f);
-
         strafe(-35, 0.5f);
-
-        stopMotors();
 
         runToPos(-180, 1.0f);
 
@@ -235,30 +229,30 @@ public class WABOTAutonomous extends LinearOpMode {
 
         sleep(100);
 
-        runToPos(190, 1.0f);
+        if(blockNumber != 6){
+            runToPos(180 + (24*CM_PER_INCH), 1.0f);
 
-        vuforia.clearVu();
+            vuforia.clearVu();
 
-        sleep(500);
+            goToHeading(0);
 
-        strafeLinear(1, 0.8f);
+            sleep(500);
 
-        while (getAverageDistance() > 40) {
+            strafeLinear(1, 0.8f);
 
-        }
+            while (getAverageDistance() > 39) {
 
-        strafeLinear(1, 0.3f);
+            }
 
-        while (getAverageDistance() > 36) {
+            strafeLinear(1, 0.3f);
 
-        }
+            while (getAverageDistance() > 35) {
 
-        stopMotors();
+            }
 
-        newPos = 0;
-        blockNumber = 1;
+            stopMotors();
 
-        if (vuforia.run().equals("NULL")) {
+        /*if (vuforia.run().equals("NULL")) {
             newPos = -115;
             while (vuforia.run().equals("NULL")) {
                 blockNumber++;
@@ -273,14 +267,9 @@ public class WABOTAutonomous extends LinearOpMode {
             }
         } else {
             newPos = 90;
-        }
+        }*/
 
-        //linearDrive(-0.1f);
-
-        // 84 BACK ARM
-        // -115 FRONT ARM
-
-        while (!vuforia.run().equals("NULL") && Math.abs(vuforia.position.y - (newPos)) > 5) {
+        /*while (!vuforia.run().equals("NULL") && Math.abs(vuforia.position.y - (newPos)) > 5) {
 
             float power;
             if (Math.abs(vuforia.position.y - (newPos)) > 50) {
@@ -296,50 +285,45 @@ public class WABOTAutonomous extends LinearOpMode {
             }
         }
 
-        stopMotors();
+        stopMotors();*/
 
-        sleep(500);
+            sleep(500);
 
-        strafeLinear(1, 0.6f);
+            strafeLinear(1, 0.6f);
 
-        while (getAverageDistance() > 10) {
+            while (getAverageDistance() > 10) {
 
-        }
+            }
 
-        strafeLinear(1, 0.2f);
+            strafeLinear(1, 0.2f);
 
-        while (getAverageDistance() > 2.5) {
+            while (getAverageDistance() > 2) {
 
-        }
+            }
 
-        stopMotors();
+            stopMotors();
 
-        if (newPos == -115) {
-            h.frontArm.setPosition(0);
+            if (newPos == -120) {
+                h.frontArm.setPosition(0);
+            } else {
+                h.backArm.setPosition(1);
+            }
+
+            sleep(500);
+
+            strafe(-35, 0.5f);
+
+            runToPos(-180, 1.0f);
+
+            h.frontArm.setPosition(1);
+            h.backArm.setPosition(0);
+
+            sleep(100);
+
+            runToPos(50, 1.0f);
         } else {
-            h.backArm.setPosition(1);
+            runToPos(50, 1.0f);
         }
-
-        sleep(500);
-
-        strafeLinear(-1, 0.5f);
-
-        //while (h.ods.getDistance(DistanceUnit.CM) < 36 && !h.touch.isPressed()) {
-
-        //}
-
-        strafe(-35, 0.5f);
-
-        stopMotors();
-
-        runToPos(-180, 1.0f);
-
-        h.frontArm.setPosition(1);
-        h.backArm.setPosition(0);
-
-        sleep(100);
-
-        runToPos(50, 1.0f);
     }
 
 
@@ -378,7 +362,18 @@ public class WABOTAutonomous extends LinearOpMode {
     public double getAverageDistance(){
         double d = h.ods.getDistance(DistanceUnit.CM)+ h.ods3.getDistance(DistanceUnit.CM);
         d /= 2;
-        return d;
+
+        double ratio = h.ods.getDistance(DistanceUnit.CM) / h.ods3.getDistance(DistanceUnit.CM) * 100;
+
+        if(ratio < 75 || ratio > 125){
+            if(h.ods.getDistance(DistanceUnit.CM) > h.ods3.getDistance(DistanceUnit.CM)){
+                return h.ods3.getDistance(DistanceUnit.CM);
+            } else {
+                return h.ods.getDistance(DistanceUnit.CM);
+            }
+        } else {
+            return d;
+        }
     }
 
 
@@ -390,8 +385,8 @@ public class WABOTAutonomous extends LinearOpMode {
 
 
     public void goToHeading(double heading){
-        while (Math.abs(imu.getHeading()-heading) > 0.5) {
-            double power = Math.pow(3, 0.01*Math.abs(imu.getHeading()-heading))-0.98;
+        while (Math.abs(imu.getHeading()-heading) > 1.5) {
+            double power = Math.pow(3, 0.01*Math.abs(imu.getHeading()-heading))-0.87;
             telemetry.addData("DIFFERENCE:", Math.abs(imu.getHeading()-heading));
             telemetry.update();
             if (imu.getHeading() > heading) {
