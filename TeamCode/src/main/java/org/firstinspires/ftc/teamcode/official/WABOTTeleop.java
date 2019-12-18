@@ -58,7 +58,7 @@ public class  WABOTTeleop extends OpMode {
         //vuforia = new WABOTVuforia(VUFORIA_KEY, CAMERA_DIRECTION, hardwareMap, true, CAMERA_IS_PORTRAIT, h);
 
         //vuforia.activate();
-        telemetry.addData("Status", "Initialized");
+        //telemetry.addData("Status", "Initialized");
     }
 
     /*
@@ -76,10 +76,14 @@ public class  WABOTTeleop extends OpMode {
         // Starting Positions for Servos
         //imu.activate();
 
-        h.leftFound.setPosition(1f);
-        h.rightFound.setPosition(0.5f);
-        h.backArm.setPosition(0.45f);
-        h.frontArm.setPosition(1f);
+        //h.leftFound.setPosition(1f);
+        //h.rightFound.setPosition(0.5f);
+        //h.backArm.setPosition(0.45f);
+        //h.frontArm.setPosition(1f);
+
+
+
+
         //h.leftIntakeServo.setPosition(0.74);
         // h.rightIntakeServo.setPosition(0.558);
     }
@@ -90,7 +94,7 @@ public class  WABOTTeleop extends OpMode {
     @Override
     public void loop() {
         // Gamepad2 input
-        input();
+        //input();
         // Drive train controls
         superDrive();
     }

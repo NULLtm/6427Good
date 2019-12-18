@@ -72,13 +72,13 @@ public class WABOTHardware {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        webcam = hardwareMap.get(WebcamName.class, "webcam");
+        //webcam = hardwareMap.get(WebcamName.class, "webcam");
         FLMotor = hardwareMap.get(DcMotor.class, "FLMotor");
         FRMotor = hardwareMap.get(DcMotor.class, "FRMotor");
-        touch = hardwareMap.get(RevTouchSensor.class, "touch");
+        //touch = hardwareMap.get(RevTouchSensor.class, "touch");
         BLMotor = hardwareMap.get(DcMotor.class, "BLMotor");
         BRMotor = hardwareMap.get(DcMotor.class, "BRMotor");
-        leftIntakeServo = hardwareMap.get(Servo.class, "leftIntakeServo");
+        /*leftIntakeServo = hardwareMap.get(Servo.class, "leftIntakeServo");
         rightIntakeServo = hardwareMap.get(Servo.class, "rightIntakeServo");
         leftIntake = hardwareMap.get(DcMotor.class, "leftIntake");
         rightIntake = hardwareMap.get(DcMotor.class, "rightIntake");
@@ -95,7 +95,7 @@ public class WABOTHardware {
         linearServoRight = hardwareMap.get(Servo.class, "linearServoRight");
         slideMotorLeft = hardwareMap.get(DcMotor.class, "slideMotorLeft");
         slideMotorRight = hardwareMap.get(DcMotor.class, "slideMotorRight");
-        armServo = hardwareMap.get(Servo.class, "armServo");
+        armServo = hardwareMap.get(Servo.class, "armServo");*/
 
 
 
