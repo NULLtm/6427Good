@@ -7,10 +7,12 @@ package org.firstinspires.ftc.teamcode.official;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
+import org.firstinspires.ftc.teamcode.angleDrifter.RoutableRobot;
+import org.firstinspires.ftc.teamcode.angleDrifter.Vector2D;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
@@ -23,6 +25,8 @@ public class  WABOTTeleop extends OpMode {
 
     // Declare OpMode members.
     WABOTHardware h;
+
+    private RoutableRobot robot;
 
     // IMU
     WABOTImu imu;
@@ -50,9 +54,16 @@ public class  WABOTTeleop extends OpMode {
      */
     @Override
     public void init() {
+
+        robot = new RoutableRobot();
         // Tell the driver that initialization is complete.
         h = new WABOTHardware(hardwareMap);
-        runEncoder(false);
+        //runEncoder(false);
+        h.FLMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        h.FLMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        h.FRMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        h.BLMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        h.BRMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //imu = new WABOTImu(hardwareMap);
 
         //vuforia = new WABOTVuforia(VUFORIA_KEY, CAMERA_DIRECTION, hardwareMap, true, CAMERA_IS_PORTRAIT, h);
@@ -76,16 +87,8 @@ public class  WABOTTeleop extends OpMode {
         // Starting Positions for Servos
         //imu.activate();
 
-        //h.leftFound.setPosition(1f);
-        //h.rightFound.setPosition(0.5f);
-        //h.backArm.setPosition(0.45f);
-        //h.frontArm.setPosition(1f);
-
-
-
-
-        //h.leftIntakeServo.setPosition(0.74);
-        // h.rightIntakeServo.setPosition(0.558);
+        h.LArmServo.setPosition(h.LEFTARMSERVO_IN);
+        h.RArmServo.setPosition(h.RIGHTARMSERVO_IN);
     }
 
     /*
@@ -94,9 +97,23 @@ public class  WABOTTeleop extends OpMode {
     @Override
     public void loop() {
         // Gamepad2 input
-        //input();
+        input();
+        //telemetry.addData("PATH: ", robot.initPointsFromFile());
         // Drive train controls
         superDrive();
+
+//        double newX = Math.cos(Math.toRadians(getNeatRotation(imu.getHeading())))*h.FLMotor.getCurrentPosition()*0.001;
+//        double newY = Math.sin(getNeatRotation(Math.toRadians(getNeatRotation(imu.getHeading())) ))*h.FLMotor.getCurrentPosition()*0.001;
+//        telemetry.addData("X MOVEMENT:", newX);
+//        telemetry.addData("Y MOVEMENT:", newY);
+    }
+
+    private double getNeatRotation(double heading){
+        if(heading < 0){
+            heading += 360;
+        }
+
+        return heading;
     }
 
     /*
@@ -117,7 +134,7 @@ public class  WABOTTeleop extends OpMode {
     private void input(){
 
         //telemetry.addData("Heading: ", imu.getHeading());
-        telemetry.addData("Distance Side: ", getAverageDistance());
+        //telemetry.addData("Distance Side: ", getAverageDistance());
 
         /*if(!vuforia.run().equals("NULL")) {
             telemetry.addData("POS Z: ", vuforia.position.z);
@@ -126,58 +143,36 @@ public class  WABOTTeleop extends OpMode {
             telemetry.addData("Z ROT: ", vuforia.rotationP.z);
         }*/
 
-        if(gamepad2.dpad_up){
-            h.backArm.setPosition(0.45); //0.45 or else linear slides hit --lou
-        }
-
-        if(gamepad2.dpad_down){
-            h.backArm.setPosition(1);
-        }
-
-        if(gamepad2.dpad_right){
-            h.frontArm.setPosition(1);
-        }
-
-        if(gamepad2.dpad_left){
-            h.frontArm.setPosition(0);
-        }
-
 
         // Triggers control intake/outtake
         if(gamepad1.right_trigger > 0){
             intakePow = gamepad1.right_trigger;
-            h.rightIntakeMini.setPosition(0);
-            h.leftIntakeMini.setPosition(1);
         }else if(gamepad1.left_trigger > 0){
             intakePow = -gamepad1.left_trigger;
-            h.rightIntakeMini.setPosition(1);
-            h.leftIntakeMini.setPosition(0);
         } else {
-            h.rightIntakeMini.setPosition(0.5);
-            h.leftIntakeMini.setPosition(0.5);
             intakePow = 0;
         }
-        h.leftIntake.setPower(-intakePow);
-        h.rightIntake.setPower(intakePow);
+        h.LIntake.setPower(-intakePow);
+        h.RIntake.setPower(intakePow);
 
-        double rightSlidePower = -gamepad2.left_stick_y;
-        double leftSlidePower = -gamepad2.left_stick_y;
+        double liftPower = -gamepad2.right_stick_y;
+        double armSlidePower = -gamepad2.left_stick_y;
 
         if(gamepad2.left_bumper && !gamepad2.right_bumper){
-            leftSlidePower *= 0.5;
-            rightSlidePower *= 0.5;
+            liftPower *= 0.5;
+            armSlidePower *= 0.5;
         }
         if(gamepad2.right_bumper && !gamepad2.left_bumper){
-            leftSlidePower *= 0.5;
-            rightSlidePower *= 0.5;
+            liftPower *= 0.5;
+            armSlidePower *= 0.5;
         }
         if(gamepad2.right_bumper && gamepad2.left_bumper){
-            leftSlidePower *= 0.25;
-            rightSlidePower *= 0.25;
+            liftPower *= 0.25;
+            armSlidePower *= 0.25;
         }
 
-        h.slideMotorLeft.setPower(leftSlidePower);
-        h.slideMotorRight.setPower(rightSlidePower);
+        h.slideArm.setPower(armSlidePower);
+        h.liftMotor.setPower(liftPower);
 
 
         // TESTING SERVO POSITIONS
@@ -191,30 +186,13 @@ public class  WABOTTeleop extends OpMode {
 //        telemetry.addData("Servo Pos LEFT: ", servoPosLeft);
 //        telemetry.addData("Servo Pos RIGHT: ", servoPosRight);
 
-
-
-        if(gamepad2.right_stick_y < -0.5){ //out pos
-            h.linearServoLeft.setPosition(0.84);
-            h.linearServoRight.setPosition(0.23);
+        if(gamepad2.a){
+            h.LArmServo.setPosition(h.LEFTARMSERVO_IN);
+            h.RArmServo.setPosition(h.RIGHTARMSERVO_IN);
         }
-        if(gamepad2.right_stick_y > 0.5){ //in pos
-            h.linearServoLeft.setPosition(0.40);
-            h.linearServoRight.setPosition(0.65);
-        }
-
-        if(gamepad1.dpad_right){
-            h.leftIntakeServo.setPosition(h.LEFTINTAKESERVO_IN);
-            h.rightIntakeServo.setPosition(h.RIGHTINTAKESERVO_IN);
-        }
-
-        /*if(gamepad1.dpad_left){
-            h.leftIntakeServo.setPosition(h.LEFTINTAKESERVO_OUT);
-            h.rightIntakeServo.setPosition(h.RIGHTINTAKESERVO_OUT);
-        }*/
-
-        if(gamepad1.dpad_up){
-            h.leftIntakeServo.setPosition(h.LEFTINTAKESERVO_INTAKE);
-            h.rightIntakeServo.setPosition(h.RIGHTINTAKESERVO_INTAKE);
+        if(gamepad2.b){
+            h.LArmServo.setPosition(h.LEFTARMSERVO_OUT);
+            h.RArmServo.setPosition(h.RIGHTARMSERVO_OUT);
         }
 
         if(gamepad1.x){
@@ -225,14 +203,6 @@ public class  WABOTTeleop extends OpMode {
         if(gamepad1.b){
             h.leftFound.setPosition(1f);
             h.rightFound.setPosition(0.5f);
-        }
-
-        if(gamepad2.y){
-            h.armServo.setPosition(0.59f);
-        }
-
-        if(gamepad2.a){
-            h.armServo.setPosition(0.23f);
         }
     }
 
@@ -256,8 +226,9 @@ public class  WABOTTeleop extends OpMode {
 
     }
 
+    @Deprecated
     public double getAverageDistance(){
-        double d = h.ods.getDistance(DistanceUnit.CM)+ h.ods3.getDistance(DistanceUnit.CM);
+        /*double d = h.ods.getDistance(DistanceUnit.CM)+ h.ods3.getDistance(DistanceUnit.CM);
         d /= 2;
 
         double ratio = h.ods.getDistance(DistanceUnit.CM) / h.ods3.getDistance(DistanceUnit.CM) * 100;
@@ -270,7 +241,8 @@ public class  WABOTTeleop extends OpMode {
             }
         } else {
             return d;
-        }
+        }*/
+        return 0;
     }
 
     // Tank drive controls

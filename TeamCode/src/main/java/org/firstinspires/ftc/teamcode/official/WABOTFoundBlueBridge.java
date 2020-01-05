@@ -23,10 +23,14 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.Came
  */
 @Autonomous(name="WABOTFoundBlueBridge", group="WABOT")
 public class WABOTFoundBlueBridge extends LinearOpMode {
+    @Override
+    public void runOpMode() throws InterruptedException {
+
+    }
 
 
     // Percent representing decrease in speed for driver controls
-    private final double PRECISION_SPEED_MODIFIER = 0.5;
+    /*private final double PRECISION_SPEED_MODIFIER = 0.5;
 
     // This provides the tick count for each rotation of an encoder, it's helpful for using run to position
     private final int ENCODER_TICK = 1680;
@@ -59,7 +63,7 @@ public class WABOTFoundBlueBridge extends LinearOpMode {
 
     // Parameters for initializing vuforia
     // NOTE: If Webcam: Direction = BACK, isPortrait = true;
-    private final String VUFORIA_KEY = "ATs85vP/////AAABmedvSEuRQ0j9uYwlATaryQxyeVF6AtDWjTZ/2e6s8KELjPp1fDUV3Nn3X1xEZSoPk0Y81/6kr2k/8Q0xdlNkCDIJ+qBpXM8vpA+5qL7mYY6KthDalcBqD8pKiEBiSy0gW0wzniDtDR/Bf4ndSizQgoI10u9PD248vTfkt8NxJLsgM98pyCyeYZ2c16yLcASypCOhFJvljA7M6DM+qfWgWnOWXiVd2OZLsLtFcHZu4aEKjCHwqnlk9KYSI5BT8I4i+3FoE/JffsIzAl/iXMPu7w6eJJXYqNq7lGCzMRwfn+6OoYA51sy/Ahr/uyWUj/u0nzgF/IlRkteKXks+eUok5kFLeT2KxkbpNVwie11YgQRg";
+    /*private final String VUFORIA_KEY = "ATs85vP/////AAABmedvSEuRQ0j9uYwlATaryQxyeVF6AtDWjTZ/2e6s8KELjPp1fDUV3Nn3X1xEZSoPk0Y81/6kr2k/8Q0xdlNkCDIJ+qBpXM8vpA+5qL7mYY6KthDalcBqD8pKiEBiSy0gW0wzniDtDR/Bf4ndSizQgoI10u9PD248vTfkt8NxJLsgM98pyCyeYZ2c16yLcASypCOhFJvljA7M6DM+qfWgWnOWXiVd2OZLsLtFcHZu4aEKjCHwqnlk9KYSI5BT8I4i+3FoE/JffsIzAl/iXMPu7w6eJJXYqNq7lGCzMRwfn+6OoYA51sy/Ahr/uyWUj/u0nzgF/IlRkteKXks+eUok5kFLeT2KxkbpNVwie11YgQRg";
     private final CameraDirection CAMERA_DIRECTION = CameraDirection.BACK;
     private final boolean CAMERA_IS_PORTRAIT = false;
 
@@ -97,10 +101,10 @@ public class WABOTFoundBlueBridge extends LinearOpMode {
         // Setting servo positions
         h.leftFound.setPosition(1f);
         h.rightFound.setPosition(0.5f);
-        h.backArm.setPosition(0f);
-        h.frontArm.setPosition(1f);
-        h.leftIntakeServo.setPosition(1);
-        h.rightIntakeServo.setPosition(0.558);
+        //h.backArm.setPosition(0f);
+        //h.frontArm.setPosition(1f);
+        //h.leftIntakeServo.setPosition(1);
+        //h.rightIntakeServo.setPosition(0.558);
 
         //vuforia = new WABOTVuforia(VUFORIA_KEY, CAMERA_DIRECTION, hardwareMap, true, CAMERA_IS_PORTRAIT, h);
 
@@ -677,7 +681,7 @@ public class WABOTFoundBlueBridge extends LinearOpMode {
                 heading *= -1;
             }
         } */
-        return Math.abs(h);
+        //return Math.abs(h);
     }
 
 
@@ -688,7 +692,7 @@ public class WABOTFoundBlueBridge extends LinearOpMode {
 
 
     // Tank drive controls
-    private void tankDrive(){
+    /*private void tankDrive(){
         double leftStickY = gamepad1.left_stick_y;
         double rightStickY = gamepad1.right_stick_y;
 
@@ -835,4 +839,4 @@ public class WABOTFoundBlueBridge extends LinearOpMode {
 
         return value;
     }
-}
+}*/

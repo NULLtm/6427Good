@@ -102,10 +102,10 @@ public class WABOTAutonomous extends LinearOpMode {
         // Setting servo positions
         h.leftFound.setPosition(1f);
         h.rightFound.setPosition(0.5f);
-        h.backArm.setPosition(0f);
-        h.frontArm.setPosition(1f);
-        h.leftIntakeServo.setPosition(1f);
-        h.rightIntakeServo.setPosition(0.558);
+        //h.backArm.setPosition(0f);
+        //h.frontArm.setPosition(1f);
+        //h.leftIntakeServo.setPosition(1f);
+        //h.rightIntakeServo.setPosition(0.558);
 
         vuforia = new WABOTVuforia(VUFORIA_KEY, CAMERA_DIRECTION, hardwareMap, true, CAMERA_IS_PORTRAIT, h);
 
@@ -213,9 +213,9 @@ public class WABOTAutonomous extends LinearOpMode {
         stopMotors();
 
         if (newPos == -120) {
-            h.frontArm.setPosition(0);
+            //h.frontArm.setPosition(0);
         } else {
-            h.backArm.setPosition(1);
+           // h.backArm.setPosition(1);
         }
 
         sleep(500);
@@ -224,8 +224,8 @@ public class WABOTAutonomous extends LinearOpMode {
 
         runToPos(-180, 1.0f);
 
-        h.frontArm.setPosition(1);
-        h.backArm.setPosition(0);
+        //h.frontArm.setPosition(1);
+        //h.backArm.setPosition(0);
 
         sleep(100);
 
@@ -304,9 +304,9 @@ public class WABOTAutonomous extends LinearOpMode {
             stopMotors();
 
             if (newPos == -120) {
-                h.frontArm.setPosition(0);
+                //h.frontArm.setPosition(0);
             } else {
-                h.backArm.setPosition(1);
+                //h.backArm.setPosition(1);
             }
 
             sleep(500);
@@ -315,8 +315,8 @@ public class WABOTAutonomous extends LinearOpMode {
 
             runToPos(-180, 1.0f);
 
-            h.frontArm.setPosition(1);
-            h.backArm.setPosition(0);
+            //h.frontArm.setPosition(1);
+            //h.backArm.setPosition(0);
 
             sleep(100);
 
@@ -358,9 +358,9 @@ public class WABOTAutonomous extends LinearOpMode {
 
 
 
-
+    @Deprecated
     public double getAverageDistance(){
-        double d = h.ods.getDistance(DistanceUnit.CM)+ h.ods3.getDistance(DistanceUnit.CM);
+        /*double d = h.ods.getDistance(DistanceUnit.CM)+ h.ods3.getDistance(DistanceUnit.CM);
         d /= 2;
 
         double ratio = h.ods.getDistance(DistanceUnit.CM) / h.ods3.getDistance(DistanceUnit.CM) * 100;
@@ -373,7 +373,8 @@ public class WABOTAutonomous extends LinearOpMode {
             }
         } else {
             return d;
-        }
+        }*/
+        return 0;
     }
 
 

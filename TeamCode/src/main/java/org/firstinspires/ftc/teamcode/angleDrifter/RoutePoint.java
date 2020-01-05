@@ -2,10 +2,10 @@ package org.firstinspires.ftc.teamcode.angleDrifter;
 
 public class RoutePoint {
 
-    public int offsetX;
-    public int offsetY;
+    public double offsetX;
+    public double offsetY;
 
-    public void RoutePoint(int offsetX, int offsetY){
+    public RoutePoint(double offsetX, double offsetY){
         this.offsetX = offsetX;
         this.offsetY = offsetY;
     }

@@ -11,15 +11,15 @@ MERGED from [:FtcCommon-release:] C:\Users\Wrightang\.gradle\caches\transforms-2
 MERGED from [:WirelessP2p-release:] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\fda35a8a97c01d66ecfb9b40bb4413b0\WirelessP2p-release\AndroidManifest.xml:2:1-11:12
 MERGED from [:tfod-release:] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\414afd222ead59dbee5074e4d00922a6\tfod-release\AndroidManifest.xml:2:1-11:12
 MERGED from [:tensorflow-lite-0.0.0-nightly:] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\56b5a4c5a40c879e95beb17a7d8e7720\tensorflow-lite-0.0.0-nightly\AndroidManifest.xml:2:1-6:12
+MERGED from [com.github.dogecv:dogecv:2020.4-alpha] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\9a354db4424c2f9280a589066b5a999d\dogecv-2020.4-alpha\AndroidManifest.xml:2:1-17:12
 MERGED from [:Inspection-release:] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\475e3555dd4a88a11489f161d81bd0ca\Inspection-release\AndroidManifest.xml:2:1-32:12
 MERGED from [:Blocks-release:] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\82f88dad1c5dbbddcbaa303c43c04666\Blocks-release\AndroidManifest.xml:2:1-41:12
 MERGED from [:RobotServer-release:] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\bccc37a384ccc616e640cf2d03efc4d2\RobotServer-release\AndroidManifest.xml:2:1-11:12
 MERGED from [:OnBotJava-release:] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\1bb926ab04714733ef90eebb9ad245e9\OnBotJava-release\AndroidManifest.xml:34:1-43:12
 MERGED from [com.android.support:support-compat:28.0.0] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\f14724208b5bfeeef0d6bdefe649bca7\support-compat-28.0.0\AndroidManifest.xml:17:1-24:12
-MERGED from [com.github.dogecv:dogecv:2020.4-alpha] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\9a354db4424c2f9280a589066b5a999d\dogecv-2020.4-alpha\AndroidManifest.xml:2:1-17:12
+MERGED from [org.openftc:easyopencv:1.2] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\1a77260d7d48385c1186f5f599f6e5e1\easyopencv-1.2\AndroidManifest.xml:2:1-11:12
 MERGED from [com.android.support:versionedparcelable:28.0.0] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\f993d148e999fdf956a4937ae88c6ee1\versionedparcelable-28.0.0\AndroidManifest.xml:17:1-25:12
 MERGED from [android.arch.lifecycle:runtime:1.1.1] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\a4cce78b48541915b29a77ed3286103c\runtime-1.1.1\AndroidManifest.xml:17:1-22:12
-MERGED from [org.openftc:easyopencv:1.2] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\1a77260d7d48385c1186f5f599f6e5e1\easyopencv-1.2\AndroidManifest.xml:2:1-11:12
 MERGED from [org.openftc:opencv-repackaged:4.1.0-A] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\ddc0dae290658feb35c843074f410f0b\opencv-repackaged-4.1.0-A\AndroidManifest.xml:2:1-11:12
 INJECTED from C:\Users\Wrightang\Documents\GitHub\6427Good\TeamCode\src\main\AndroidManifest.xml:8:1-12:12
 INJECTED from C:\Users\Wrightang\Documents\GitHub\6427Good\TeamCode\src\main\AndroidManifest.xml:8:1-12:12
@@ -48,20 +48,20 @@ MERGED from [:FtcCommon-release:] C:\Users\Wrightang\.gradle\caches\transforms-2
 MERGED from [:FtcCommon-release:] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\3bb5ddd434a4e82c6b5235547b786337\FtcCommon-release\AndroidManifest.xml:23:5-233:19
 MERGED from [:tensorflow-lite-0.0.0-nightly:] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\56b5a4c5a40c879e95beb17a7d8e7720\tensorflow-lite-0.0.0-nightly\AndroidManifest.xml:4:5-5:19
 MERGED from [:tensorflow-lite-0.0.0-nightly:] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\56b5a4c5a40c879e95beb17a7d8e7720\tensorflow-lite-0.0.0-nightly\AndroidManifest.xml:4:5-5:19
+MERGED from [com.github.dogecv:dogecv:2020.4-alpha] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\9a354db4424c2f9280a589066b5a999d\dogecv-2020.4-alpha\AndroidManifest.xml:11:5-15:19
+MERGED from [com.github.dogecv:dogecv:2020.4-alpha] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\9a354db4424c2f9280a589066b5a999d\dogecv-2020.4-alpha\AndroidManifest.xml:11:5-15:19
 MERGED from [:Inspection-release:] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\475e3555dd4a88a11489f161d81bd0ca\Inspection-release\AndroidManifest.xml:19:5-30:19
 MERGED from [:Inspection-release:] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\475e3555dd4a88a11489f161d81bd0ca\Inspection-release\AndroidManifest.xml:19:5-30:19
 MERGED from [:Blocks-release:] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\82f88dad1c5dbbddcbaa303c43c04666\Blocks-release\AndroidManifest.xml:18:5-39:19
 MERGED from [:Blocks-release:] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\82f88dad1c5dbbddcbaa303c43c04666\Blocks-release\AndroidManifest.xml:18:5-39:19
 MERGED from [com.android.support:support-compat:28.0.0] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\f14724208b5bfeeef0d6bdefe649bca7\support-compat-28.0.0\AndroidManifest.xml:22:5-94
 MERGED from [com.android.support:support-compat:28.0.0] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\f14724208b5bfeeef0d6bdefe649bca7\support-compat-28.0.0\AndroidManifest.xml:22:5-94
-MERGED from [com.github.dogecv:dogecv:2020.4-alpha] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\9a354db4424c2f9280a589066b5a999d\dogecv-2020.4-alpha\AndroidManifest.xml:11:5-15:19
-MERGED from [com.github.dogecv:dogecv:2020.4-alpha] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\9a354db4424c2f9280a589066b5a999d\dogecv-2020.4-alpha\AndroidManifest.xml:11:5-15:19
 MERGED from [com.android.support:versionedparcelable:28.0.0] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\f993d148e999fdf956a4937ae88c6ee1\versionedparcelable-28.0.0\AndroidManifest.xml:22:5-23:19
 MERGED from [com.android.support:versionedparcelable:28.0.0] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\f993d148e999fdf956a4937ae88c6ee1\versionedparcelable-28.0.0\AndroidManifest.xml:22:5-23:19
-	android:supportsRtl
-		ADDED from [com.github.dogecv:dogecv:2020.4-alpha] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\9a354db4424c2f9280a589066b5a999d\dogecv-2020.4-alpha\AndroidManifest.xml:14:9-35
 	android:appComponentFactory
 		ADDED from [com.android.support:support-compat:28.0.0] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\f14724208b5bfeeef0d6bdefe649bca7\support-compat-28.0.0\AndroidManifest.xml:22:18-91
+	android:supportsRtl
+		ADDED from [com.github.dogecv:dogecv:2020.4-alpha] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\9a354db4424c2f9280a589066b5a999d\dogecv-2020.4-alpha\AndroidManifest.xml:14:9-35
 	android:label
 		ADDED from [:FtcRobotController] C:\Users\Wrightang\Documents\GitHub\6427Good\FtcRobotController\build\intermediates\library_manifest\debug\AndroidManifest.xml:17:9-41
 	android:largeHeap
@@ -90,6 +90,8 @@ MERGED from [:WirelessP2p-release:] C:\Users\Wrightang\.gradle\caches\transforms
 MERGED from [:WirelessP2p-release:] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\fda35a8a97c01d66ecfb9b40bb4413b0\WirelessP2p-release\AndroidManifest.xml:5:5-7:41
 MERGED from [:tfod-release:] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\414afd222ead59dbee5074e4d00922a6\tfod-release\AndroidManifest.xml:7:5-9:41
 MERGED from [:tfod-release:] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\414afd222ead59dbee5074e4d00922a6\tfod-release\AndroidManifest.xml:7:5-9:41
+MERGED from [com.github.dogecv:dogecv:2020.4-alpha] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\9a354db4424c2f9280a589066b5a999d\dogecv-2020.4-alpha\AndroidManifest.xml:7:5-9:41
+MERGED from [com.github.dogecv:dogecv:2020.4-alpha] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\9a354db4424c2f9280a589066b5a999d\dogecv-2020.4-alpha\AndroidManifest.xml:7:5-9:41
 MERGED from [:Inspection-release:] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\475e3555dd4a88a11489f161d81bd0ca\Inspection-release\AndroidManifest.xml:7:5-9:41
 MERGED from [:Inspection-release:] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\475e3555dd4a88a11489f161d81bd0ca\Inspection-release\AndroidManifest.xml:7:5-9:41
 MERGED from [:Blocks-release:] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\82f88dad1c5dbbddcbaa303c43c04666\Blocks-release\AndroidManifest.xml:7:5-9:41
@@ -100,14 +102,12 @@ MERGED from [:OnBotJava-release:] C:\Users\Wrightang\.gradle\caches\transforms-2
 MERGED from [:OnBotJava-release:] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\1bb926ab04714733ef90eebb9ad245e9\OnBotJava-release\AndroidManifest.xml:39:5-41:41
 MERGED from [com.android.support:support-compat:28.0.0] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\f14724208b5bfeeef0d6bdefe649bca7\support-compat-28.0.0\AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:support-compat:28.0.0] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\f14724208b5bfeeef0d6bdefe649bca7\support-compat-28.0.0\AndroidManifest.xml:20:5-44
-MERGED from [com.github.dogecv:dogecv:2020.4-alpha] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\9a354db4424c2f9280a589066b5a999d\dogecv-2020.4-alpha\AndroidManifest.xml:7:5-9:41
-MERGED from [com.github.dogecv:dogecv:2020.4-alpha] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\9a354db4424c2f9280a589066b5a999d\dogecv-2020.4-alpha\AndroidManifest.xml:7:5-9:41
+MERGED from [org.openftc:easyopencv:1.2] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\1a77260d7d48385c1186f5f599f6e5e1\easyopencv-1.2\AndroidManifest.xml:7:5-9:41
+MERGED from [org.openftc:easyopencv:1.2] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\1a77260d7d48385c1186f5f599f6e5e1\easyopencv-1.2\AndroidManifest.xml:7:5-9:41
 MERGED from [com.android.support:versionedparcelable:28.0.0] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\f993d148e999fdf956a4937ae88c6ee1\versionedparcelable-28.0.0\AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:versionedparcelable:28.0.0] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\f993d148e999fdf956a4937ae88c6ee1\versionedparcelable-28.0.0\AndroidManifest.xml:20:5-44
 MERGED from [android.arch.lifecycle:runtime:1.1.1] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\a4cce78b48541915b29a77ed3286103c\runtime-1.1.1\AndroidManifest.xml:20:5-44
 MERGED from [android.arch.lifecycle:runtime:1.1.1] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\a4cce78b48541915b29a77ed3286103c\runtime-1.1.1\AndroidManifest.xml:20:5-44
-MERGED from [org.openftc:easyopencv:1.2] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\1a77260d7d48385c1186f5f599f6e5e1\easyopencv-1.2\AndroidManifest.xml:7:5-9:41
-MERGED from [org.openftc:easyopencv:1.2] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\1a77260d7d48385c1186f5f599f6e5e1\easyopencv-1.2\AndroidManifest.xml:7:5-9:41
 MERGED from [org.openftc:opencv-repackaged:4.1.0-A] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\ddc0dae290658feb35c843074f410f0b\opencv-repackaged-4.1.0-A\AndroidManifest.xml:7:5-9:41
 MERGED from [org.openftc:opencv-repackaged:4.1.0-A] C:\Users\Wrightang\.gradle\caches\transforms-2\files-2.1\ddc0dae290658feb35c843074f410f0b\opencv-repackaged-4.1.0-A\AndroidManifest.xml:7:5-9:41
 INJECTED from C:\Users\Wrightang\Documents\GitHub\6427Good\TeamCode\src\main\AndroidManifest.xml

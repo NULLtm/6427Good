@@ -44,7 +44,13 @@ public class WABOTImu {
 
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        return angles.firstAngle;
+        double a = angles.firstAngle+90;
+        if(a > 180){
+            a = 360-a;
+            a*=-1;
+        }
+
+        return a;
     }
 
     String formatAngle(AngleUnit angleUnit, double angle) {
